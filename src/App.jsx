@@ -5,7 +5,6 @@ import Products from './components/Products';
 import Testimonials from './components/Testimonials';
 import About from './components/About';
 import Contact from './components/Contact';
-import Cart from './components/Cart';
 import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Favorites from './components/Favorites';
@@ -24,7 +23,6 @@ function App() {
         <About />
         <Contact />
         <Favorites />
-        <Cart />
         <Auth />
         <Footer />
       </div>
