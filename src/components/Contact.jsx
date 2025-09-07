@@ -5,7 +5,7 @@ function Contact() {
     <section className="py-20 px-6 bg-white text-center">
       <h2 className="text-3xl font-display text-primary mb-6">Contact Us</h2>
       <p className="text-secondary mb-4">Email: talesofthecake@gmail.com</p>
-      <p className="text-secondary mb-4">Phone: +919931052652</p>
+      <p className="text-secondary mb-4">Phone: +91number</p>
     </section>
   );
 }
