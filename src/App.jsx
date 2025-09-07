@@ -9,7 +9,7 @@ import Cart from './components/Cart';
 import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Favorites from './components/Favorites';
-import { ShopProvider } from './components/shopContext';
+import { ShopProvider } from './components/ShopContext';
 import Test from './components/Test';
 
 function App() {
