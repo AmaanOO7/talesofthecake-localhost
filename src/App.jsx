@@ -15,6 +15,7 @@ import Test from './components/Test';
 function App() {
   return (
     <ShopProvider>
+      <Test />
       <Navbar />
       <div className="pt-20">
         <Hero />
