@@ -10,29 +10,39 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <h1 className="font-display text-2xl font-bold">Tales of the Cake</h1>
 
-        {/* Hamburger for mobile */}
+        {/* Hamburger / Close Button */}
         <div className="md:hidden">
           <button
             onClick={() => setOpen(!open)}
-            className="text-3xl focus:outline-none"
+            className="relative w-8 h-8 focus:outline-none flex items-center justify-center"
           >
-            ☰
+            <span
+              className={`block absolute h-0.5 w-6 bg-white transform transition duration-300 ease-in-out ${
+                open ? 'rotate-45 translate-y-1.5' : '-translate-y-2'
+              }`}
+            ></span>
+            <span
+              className={`block absolute h-0.5 w-6 bg-white transition duration-300 ease-in-out ${
+                open ? 'opacity-0' : 'opacity-100'
+              }`}
+            ></span>
+            <span
+              className={`block absolute h-0.5 w-6 bg-white transform transition duration-300 ease-in-out ${
+                open ? '-rotate-45 -translate-y-1.5' : 'translate-y-2'
+              }`}
+            ></span>
           </button>
         </div>
 
         {/* Desktop & Tablet Menu */}
-        <ul
-          className={`md:flex md:items-center md:gap-6 ${
-            open ? 'block' : 'hidden'
-          }`}
-        >
-          <li className="py-2 md:py-0 cursor-pointer hover:text-secondary">Home</li>
-          <li className="py-2 md:py-0 cursor-pointer hover:text-secondary">Products</li>
-          <li className="py-2 md:py-0 cursor-pointer hover:text-secondary">About</li>
-          <li className="py-2 md:py-0 cursor-pointer hover:text-secondary">Contact</li>
+        <ul className="hidden md:flex md:items-center md:gap-6">
+          <li className="cursor-pointer hover:text-secondary">Home</li>
+          <li className="cursor-pointer hover:text-secondary">Products</li>
+          <li className="cursor-pointer hover:text-secondary">About</li>
+          <li className="cursor-pointer hover:text-secondary">Contact</li>
 
-          {/* Cart Icon */}
-          <li className="relative py-2 md:py-0 cursor-pointer">
+          {/* Cart */}
+          <li className="relative cursor-pointer">
             🛒
             {cart.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
@@ -41,8 +51,8 @@ function Navbar() {
             )}
           </li>
 
-          {/* Favorites Icon */}
-          <li className="relative py-2 md:py-0 cursor-pointer">
+          {/* Favorites */}
+          <li className="relative cursor-pointer">
             ❤️
             {favorites.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
@@ -51,38 +61,40 @@ function Navbar() {
             )}
           </li>
 
-          <li className="py-2 md:py-0 cursor-pointer hover:text-secondary">Login</li>
+          <li className="cursor-pointer hover:text-secondary">Login</li>
         </ul>
       </div>
 
-      {/* Mobile Menu */}
-      <ul
-        className={`md:hidden px-6 pb-4 bg-primary ${
-          open ? 'block' : 'hidden'
-        } space-y-2`}
+      {/* Mobile Menu with Slide Animation */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          open ? 'max-h-96' : 'max-h-0'
+        }`}
       >
-        <li className="cursor-pointer hover:text-secondary">Home</li>
-        <li className="cursor-pointer hover:text-secondary">Products</li>
-        <li className="cursor-pointer hover:text-secondary">About</li>
-        <li className="cursor-pointer hover:text-secondary">Contact</li>
-        <li className="relative cursor-pointer">
-          🛒
-          {cart.length > 0 && (
-            <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-              {cart.length}
-            </span>
-          )}
-        </li>
-        <li className="relative cursor-pointer">
-          ❤️
-          {favorites.length > 0 && (
-            <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-              {favorites.length}
-            </span>
-          )}
-        </li>
-        <li className="cursor-pointer hover:text-secondary">Login</li>
-      </ul>
+        <ul className="flex flex-col gap-4 px-6 py-4 bg-primary">
+          <li className="cursor-pointer hover:text-secondary">Home</li>
+          <li className="cursor-pointer hover:text-secondary">Products</li>
+          <li className="cursor-pointer hover:text-secondary">About</li>
+          <li className="cursor-pointer hover:text-secondary">Contact</li>
+          <li className="relative cursor-pointer">
+            🛒
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                {cart.length}
+              </span>
+            )}
+          </li>
+          <li className="relative cursor-pointer">
+            ❤️
+            {favorites.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                {favorites.length}
+              </span>
+            )}
+          </li>
+          <li className="cursor-pointer hover:text-secondary">Login</li>
+        </ul>
+      </div>
     </nav>
   );
 }
