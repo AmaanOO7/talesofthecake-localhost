@@ -1,11 +1,3 @@
-export default function Test() {
-  return (
-    <div className="bg-red-500 text-white text-2xl p-6 fixed top-0 left-0 w-full z-50">
-      This should be FIXED at the top in red
-    </div>
-  );
-}
-
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -18,6 +10,7 @@ import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Favorites from './components/Favorites';
 import { ShopProvider } from './components/ShopContext';
+import Test from './components/Test';
 
 function App() {
   return (
