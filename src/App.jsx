@@ -9,7 +9,7 @@ import Cart from './components/Cart';
 import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Favorites from './components/Favorites';
-import { ShopProvider, ShopContext } from './ShopContext';
+import { ShopProvider, ShopContext } from './components/ShopContext';
 
 function Header() {
   const { cart, favorites } = useContext(ShopContext);
