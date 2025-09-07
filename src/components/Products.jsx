@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { CartContext } from './CartContext';
 
 const PRODUCTS = [
   { id: 1, name: 'Vanilla Story Cake', price: '₹1,200', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=60' },
@@ -7,8 +8,8 @@ const PRODUCTS = [
 ];
 
 function Products() {
+  const { cart, addToCart } = useContext(CartContext);
   const [favorites, setFavorites] = useState([]);
-  const [cart, setCart] = useState([]);
   const [popup, setPopup] = useState({ visible: false, message: '' });
 
   const showPopup = (message) => {
@@ -21,18 +22,15 @@ function Products() {
       setFavorites([...favorites, product.id]);
       showPopup(`${product.name} added to favorites! ❤️`);
     } else {
-      showPopup(`${product.name} removed from favorites 💔`);
       setFavorites(favorites.filter((id) => id !== product.id));
+      showPopup(`${product.name} removed from favorites 💔`);
     }
   };
 
   const handleAddToCart = (product) => {
-    if (!cart.includes(product.id)) {
-      setCart([...cart, product.id]);
+    if (!cart.find((item) => item.id === product.id)) {
+      addToCart(product);
       showPopup(`${product.name} added to cart! 🛒`);
-    } else {
-      showPopup(`${product.name} removed from cart 🗑️`);
-      setCart(cart.filter((id) => id !== product.id));
     }
   };
 
@@ -63,10 +61,10 @@ function Products() {
                 <button
                   onClick={() => handleAddToCart(product)}
                   className={`px-4 py-2 rounded transition ${
-                    cart.includes(product.id) ? 'bg-green-600 text-white' : 'bg-green-500 text-white hover:bg-green-600'
+                    cart.find((item) => item.id === product.id) ? 'bg-green-600 text-white' : 'bg-green-500 text-white hover:bg-green-600'
                   }`}
                 >
-                  {cart.includes(product.id) ? '✔️ In Cart' : '🛒 Add to Cart'}
+                  {cart.find((item) => item.id === product.id) ? '✔️ In Cart' : '🛒 Add to Cart'}
                 </button>
               </div>
             </div>
