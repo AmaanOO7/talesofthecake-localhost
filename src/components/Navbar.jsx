@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { ShopContext } from './ShopContext';
+import { ShopContext } from './components/ShopContext';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
