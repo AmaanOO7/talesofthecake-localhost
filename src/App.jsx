@@ -9,12 +9,10 @@ import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Favorites from './components/Favorites';
 import { ShopProvider } from './components/ShopContext';
-import Test from './components/Test';
 
 function App() {
   return (
     <ShopProvider>
-      <Test />
       <Navbar />
       <div className="pt-20">
         <Hero />
