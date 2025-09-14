@@ -169,74 +169,101 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* Cart Drawer (Right) */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
-          cartOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-lg font-bold">Your Cart</h2>
-          <button onClick={() => setCartOpen(false)} className="text-xl">
-            ✖
-          </button>
-        </div>
+     {/* Cart Drawer (Right) */}
+<div
+  className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
+    cartOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+>
+  <div className="flex justify-between items-center p-4 border-b">
+    <h2 className="text-lg font-bold">Your Cart</h2>
+    <button onClick={() => setCartOpen(false)} className="text-xl">
+      ✖
+    </button>
+  </div>
 
-        <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
-          {cart.length === 0 ? (
-            <p className="text-gray-500">Your cart is empty</p>
-          ) : (
-            cart.map((item, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center border-b pb-2"
-              >
-                <span>{item.name}</span>
-                <span className="font-semibold">{item.price}</span>
-              </div>
-            ))
-          )}
-        </div>
+  <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
+    {cart.length === 0 ? (
+      <p className="text-gray-500">Your cart is empty</p>
+    ) : (
+      cart.map((item, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center border-b pb-2"
+        >
+          <span>{item.name}</span>
 
-        {/* Checkout Button */}
-        {cart.length > 0 && (
-          <div className="p-4 border-t">
-            <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
-              Checkout
+          {/* Quantity Controls */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => removeFromCart(item.id)}
+              className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+            >
+              -
+            </button>
+            <span>{item.quantity || 1}</span>
+            <button
+              onClick={() => addToCart(item)}
+              className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+            >
+              +
             </button>
           </div>
-        )}
-      </div>
+
+          <span className="font-semibold">{item.price}</span>
+        </div>
+      ))
+    )}
+  </div>
+
+  {/* Checkout Button */}
+  {cart.length > 0 && (
+    <div className="p-4 border-t">
+      <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+        Checkout
+      </button>
+    </div>
+  )}
+</div>
 
       {/* Favorites Drawer (Right) */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
-          favoritesOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-lg font-bold">Your Favorites</h2>
-          <button onClick={() => setFavoritesOpen(false)} className="text-xl">
+<div
+  className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
+    favoritesOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+>
+  <div className="flex justify-between items-center p-4 border-b">
+    <h2 className="text-lg font-bold">Your Favorites</h2>
+    <button onClick={() => setFavoritesOpen(false)} className="text-xl">
+      ✖
+    </button>
+  </div>
+
+  <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
+    {favorites.length === 0 ? (
+      <p className="text-gray-500">No favorites yet</p>
+    ) : (
+      favorites.map((item, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center border-b pb-2"
+        >
+          <span>{item.name}</span>
+          <span className="font-semibold">{item.price}</span>
+
+          {/* Remove Favorite Button */}
+          <button
+            onClick={() => removeFromFavorites(item.id)}
+            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
+          >
             ✖
           </button>
         </div>
+      ))
+    )}
+  </div>
+</div>
 
-        <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
-          {favorites.length === 0 ? (
-            <p className="text-gray-500">No favorites yet</p>
-          ) : (
-            favorites.map((item, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center border-b pb-2"
-              >
-                <span>{item.name}</span>
-                <span className="font-semibold">{item.price}</span>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
     </nav>
   );
 }
