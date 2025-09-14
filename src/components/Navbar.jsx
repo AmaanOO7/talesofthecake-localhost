@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { ShopContext } from "./ShopContext";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [open, setOpen] = useState(false); // mobile menu
@@ -11,7 +12,7 @@ function Navbar() {
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Brand Logo + Text */}
-        <a href="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <img
             src="/logo.jpg"
             alt="Tales of the Cake Logo"
@@ -20,7 +21,7 @@ function Navbar() {
           <span className="font-display text-2xl font-bold hidden md:block">
             Tales of the Cake
           </span>
-        </a>
+        </Link>
 
         {/* Hamburger (mobile only) */}
         <div className="md:hidden">
@@ -29,23 +30,37 @@ function Navbar() {
             className="relative w-8 h-8 flex items-center justify-center"
           >
             <span
-              className={`block absolute h-0.5 w-6 bg-white transform transition duration-300 ${open ? "rotate-45 translate-y-1.5" : "-translate-y-2"}`}
+              className={`block absolute h-0.5 w-6 bg-white transform transition duration-300 ${
+                open ? "rotate-45 translate-y-1.5" : "-translate-y-2"
+              }`}
             ></span>
             <span
-              className={`block absolute h-0.5 w-6 bg-white transition duration-300 ${open ? "opacity-0" : "opacity-100"}`}
+              className={`block absolute h-0.5 w-6 bg-white transition duration-300 ${
+                open ? "opacity-0" : "opacity-100"
+              }`}
             ></span>
             <span
-              className={`block absolute h-0.5 w-6 bg-white transform transition duration-300 ${open ? "-rotate-45 -translate-y-1.5" : "translate-y-2"}`}
+              className={`block absolute h-0.5 w-6 bg-white transform transition duration-300 ${
+                open ? "-rotate-45 -translate-y-1.5" : "translate-y-2"
+              }`}
             ></span>
           </button>
         </div>
 
         {/* Desktop menu */}
         <ul className="hidden md:flex items-center gap-6">
-          <li className="cursor-pointer hover:text-secondary">Home</li>
-          <li className="cursor-pointer hover:text-secondary">Products</li>
-          <li className="cursor-pointer hover:text-secondary">About</li>
-          <li className="cursor-pointer hover:text-secondary">Contact</li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/products">Products</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/about">About</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/contact">Contact</Link>
+          </li>
 
           {/* ❤️ Favorites */}
           <li className="relative cursor-pointer" onClick={() => setFavoritesOpen(true)}>
@@ -67,7 +82,9 @@ function Navbar() {
             )}
           </li>
 
-          <li className="cursor-pointer hover:text-secondary">Login</li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/login">Login</Link>
+          </li>
         </ul>
       </div>
 
@@ -90,16 +107,21 @@ function Navbar() {
         }`}
       >
         <ul className="flex flex-col gap-6 px-6 py-8">
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>Home</li>
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>Products</li>
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>About</li>
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>Contact</li>
+          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
+            <Link to="/">Home</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
+            <Link to="/products">Products</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
+            <Link to="/about">About</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
+            <Link to="/contact">Contact</Link>
+          </li>
 
           {/* ❤️ Favorites (mobile) */}
-          <li
-            className="relative cursor-pointer"
-            onClick={() => { setOpen(false); setFavoritesOpen(true); }}
-          >
+          <li className="relative cursor-pointer" onClick={() => { setOpen(false); setFavoritesOpen(true); }}>
             ❤️
             {favorites.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
@@ -109,10 +131,7 @@ function Navbar() {
           </li>
 
           {/* 🛒 Cart (mobile) */}
-          <li
-            className="relative cursor-pointer"
-            onClick={() => { setOpen(false); setCartOpen(true); }}
-          >
+          <li className="relative cursor-pointer" onClick={() => { setOpen(false); setCartOpen(true); }}>
             🛒
             {cart.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
@@ -121,7 +140,9 @@ function Navbar() {
             )}
           </li>
 
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>Login</li>
+          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
+            <Link to="/login">Login</Link>
+          </li>
         </ul>
       </div>
 
