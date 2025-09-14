@@ -1,5 +1,8 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import AllProducts from './components/AllProducts';
+import Home from './components/Home';
 import Hero from './components/Hero';
 import Products from './components/Products';
 import Testimonials from './components/Testimonials';
@@ -13,8 +16,14 @@ import { ShopProvider } from './components/ShopContext';
 function App() {
   return (
     <ShopProvider>
+      <Router>
       <Navbar />
       <div className="pt-20">
+        <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<AllProducts />} />
+      </Routes>
+      </Router>
         <Hero />
         <Products />
         <Testimonials />
