@@ -3,8 +3,8 @@ import { ShopContext } from './ShopContext';
 
 const PRODUCTS = [
   { id: 1, name: 'Vanilla Story Cake', price: '₹1,200', img: '/images/choco-cake.jfif' },
-  { id: 2, name: 'Chocolate Chronicle', price: '₹1,500', img: 'https://images.unsplash.com/photo-1617196032732-31213c58f62c?auto=format&fit=crop&w=800&q=60' },
-  { id: 3, name: 'Strawberry Bliss', price: '₹1,300', img: 'https://images.unsplash.com/photo-1589308078052-69e3f73c2d4b?auto=format&fit=crop&w=800&q=60' },
+  { id: 2, name: 'Chocolate Chronicle', price: '₹1,500', img: '/images/pineapple-cake.jfif' },
+  { id: 3, name: 'Strawberry Bliss', price: '₹1,300', img: '/images/vanila-cake.jfif' },
 ];
 
 function Products() {
