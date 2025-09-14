@@ -195,12 +195,21 @@ function Navbar() {
 
           {/* Quantity Controls */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => removeFromCart(item.id)}
-              className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            >
-              -
-            </button>
+            {item.quantity > 1 ? (
+              <button
+                onClick={() => removeFromCart(item.id)}
+                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                -
+              </button>
+            ) : (
+              <button
+                onClick={() => removeFromCart(item.id)}
+                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                🗑️
+              </button>
+            )}
             <span>{item.quantity || 1}</span>
             <button
               onClick={() => addToCart(item)}
@@ -225,6 +234,7 @@ function Navbar() {
     </div>
   )}
 </div>
+
 
       {/* Favorites Drawer (Right) */}
 <div
