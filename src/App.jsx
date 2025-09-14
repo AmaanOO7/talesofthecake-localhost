@@ -17,25 +17,30 @@ function App() {
   return (
     <ShopProvider>
       <Router>
-        {/* Navbar always inside Router */}
         <Navbar />
 
-        {/* Main content */}
         <div className="pt-20">
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* Home Page */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <Products />
+                  <Testimonials />
+                  <About />
+                  <Contact />
+                  <Favorites />
+                  <Auth />
+                  <Footer />
+                </>
+              }
+            />
+
+            {/* All Products Page */}
             <Route path="/products" element={<AllProducts />} />
           </Routes>
-
-          {/* Components that are not route-specific can stay outside Routes */}
-          <Hero />
-          <Products />
-          <Testimonials />
-          <About />
-          <Contact />
-          <Favorites />
-          <Auth />
-          <Footer />
         </div>
       </Router>
     </ShopProvider>
