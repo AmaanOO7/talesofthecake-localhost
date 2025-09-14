@@ -14,7 +14,7 @@ function Navbar() {
         {/* Brand Logo + Text */}
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="/logo.jpg"
+            src="/logo1.jpg"
             alt="Tales of the Cake Logo"
             className="h-8 w-8 md:h-10 md:w-10 object-contain rounded-full"
           />
