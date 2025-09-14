@@ -8,16 +8,13 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Brand Logo + Text */}
+        {/* Brand Logo */}
         <a href="/" className="flex items-center gap-2">
           <img
             src="/logo.jpg"
-            alt="Tales of the Cake Logo"
-            className="h-8 w-8 md:h-10 md:w-10 object-contain rounded-full"
+            alt="Tales of the Cake"
+            className="h-10 w-auto object-contain"
           />
-          <span className="font-display text-2xl font-bold hidden md:block">
-            Tales of the Cake
-          </span>
         </a>
 
         {/* Hamburger (mobile only) */}
@@ -76,12 +73,10 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* Mobile dropdown menu with smooth slide animation */}
+      {/* Mobile dropdown menu */}
       <div
-        className={`md:hidden transform transition-all duration-500 ease-in-out ${
-          open
-            ? "translate-y-0 opacity-100 max-h-96"
-            : "-translate-y-5 opacity-0 max-h-0 pointer-events-none"
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          open ? "max-h-96" : "max-h-0"
         }`}
       >
         <ul className="flex flex-col gap-4 px-6 py-4 bg-primary">
