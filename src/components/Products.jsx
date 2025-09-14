@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { ShopContext } from './ShopContext';
 
 const PRODUCTS = [
-  { id: 1, name: 'Vanilla Story Cake', price: '₹1,200', img: 'https://instagram.fhyd1-2.fna.fbcdn.net/v/t51.29350-15/462461237_1200758107702812_8551589479188988463_n.webp?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjE0NDB4MTQ0MC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UuYzIifQ&_nc_ht=instagram.fhyd1-2.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QEy-KmDYwKIiGXwa6_2iEceWd1IoeKMl78QH2gy4bLUjLwsk-FTecy35WZJNbmN49QzPYySv53EiGa1Eq8JcPmd&_nc_ohc=rexHTog_sMYQ7kNvwEM4tqL&_nc_gid=HEQ6MyIV0rV4v4Ze5AoQDQ&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzQ3NTA4OTgwNDEzMDkxMDk4Ng%3D%3D.3-ccb7-5&oh=00_AfbQr80K_nu9YqIPCd7x9UOZd8lXcMKKX7_0JRn8oF6LEw&oe=68CC5C77&_nc_sid=22de04' },
+  { id: 1, name: 'Vanilla Story Cake', price: '₹1,200', img: './Pictures/Choco Cake.jfif' },
   { id: 2, name: 'Chocolate Chronicle', price: '₹1,500', img: 'https://images.unsplash.com/photo-1617196032732-31213c58f62c?auto=format&fit=crop&w=800&q=60' },
   { id: 3, name: 'Strawberry Bliss', price: '₹1,300', img: 'https://images.unsplash.com/photo-1589308078052-69e3f73c2d4b?auto=format&fit=crop&w=800&q=60' },
 ];
