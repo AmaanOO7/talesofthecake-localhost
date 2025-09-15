@@ -31,8 +31,6 @@ function App() {
                   <Testimonials />
                   <About />
                   <Contact />
-                  <Favorites />
-                  <Auth />
                   <Footer />
                 </>
               }
