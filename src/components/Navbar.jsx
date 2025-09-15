@@ -15,7 +15,7 @@ function Navbar() {
   <div className="flex-1 flex justify-center md:justify-start">
     <Link to="/">
       <img
-        src="/logo_hut2.png"
+        src="/logo_hut2_nobg.png"
         alt="Tales of the Cake Logo"
         className="h-16 md:h-20 w-auto object-contain"
       />
