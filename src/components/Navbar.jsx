@@ -55,10 +55,10 @@ function Navbar() {
             <Link to="/products">Products</Link>
           </li>
           <li className="cursor-pointer hover:text-secondary">
-            <Link to="/about">About</Link>
+            <Link to="#about">About</Link>
           </li>
           <li className="cursor-pointer hover:text-secondary">
-            <Link to="/contact">Contact</Link>
+            <Link to="#contact">Contact</Link>
           </li>
 
           {/* ❤️ Favorites */}
