@@ -16,7 +16,7 @@ function Navbar() {
           <img
             src="/logo01.png"
             alt="Tales of the Cake Logo"
-            className="h-8 w-8 md:h-10 md:w-10 object-contain rounded-full"
+            className="h-12 w-12 md:h-16 md:w-16 object-contain rounded-full"
           />
           <span className="font-display text-2xl font-bold hidden md:block">
             Tales of the Cake
