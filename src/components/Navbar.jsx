@@ -48,18 +48,23 @@ function Navbar() {
 
         {/* Desktop menu */}
         <ul className="hidden md:flex items-center gap-6">
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/products">Products</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="#about">About</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="#contact">Contact</Link>
-          </li>
+  <li className="cursor-pointer hover:text-secondary">
+    <Link to="/">Home</Link>
+  </li>
+  <li className="cursor-pointer hover:text-secondary">
+    <Link to="/products">Products</Link>
+  </li>
+  <li className="cursor-pointer hover:text-secondary">
+    <a href="#about">About</a>
+  </li>
+  <li className="cursor-pointer hover:text-secondary">
+    <a href="#contact">Contact</a>
+  </li>
+  <li className="cursor-pointer hover:text-secondary">
+    <Link to="/login">Login</Link>
+  </li>
+</ul>
+
 
           {/* ❤️ Favorites */}
           <li className="relative cursor-pointer" onClick={() => setFavoritesOpen(true)}>
