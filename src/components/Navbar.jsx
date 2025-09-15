@@ -63,7 +63,6 @@ function Navbar() {
   <li className="cursor-pointer hover:text-secondary">
     <Link to="/login">Login</Link>
   </li>
-</ul>
 
 
           {/* ❤️ Favorites */}
