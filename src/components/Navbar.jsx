@@ -117,10 +117,13 @@ function Navbar() {
             <Link to="/products">Products</Link>
           </li>
           <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
-            <Link to="/about">About</Link>
+            <a href="#about">About</a>
           </li>
           <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
-            <Link to="/contact">Contact</Link>
+            <a href="#contact">Contact</a>
+          </li>
+          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
+            <Link to="/login">Login</Link>
           </li>
 
           {/* ❤️ Favorites (mobile) */}
