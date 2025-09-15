@@ -5,6 +5,10 @@ const PRODUCTS = [
   { id: 1, name: 'Vanilla Story Cake', price: '₹1,200', img: '/images/choco-cake.jfif' },
   { id: 2, name: 'Chocolate Chronicle', price: '₹1,500', img: '/images/pineapple-cake.jfif' },
   { id: 3, name: 'Strawberry Bliss', price: '₹1,300', img: '/images/vanila-cake.jfif' },
+  { id: 4, name: 'Blueberry Heaven', price: '₹1,400', img: '/images/blueberry-cake.jfif' },
+  { id: 5, name: 'Lemon Delight', price: '₹1,250', img: '/images/lemon-cake.jfif' },
+  { id: 6, name: 'Red Velvet Charm', price: '₹1,600', img: '/images/red-velvet-cake.jfif' },
+  { id: 7, name: 'Coffee Crunch', price: '₹1,350', img: '/images/coffee-cake.jfif' },
 ];
 
 function Products() {
@@ -31,7 +35,7 @@ function Products() {
   };
 
   const handleAddToCart = (product) => {
-    addToCart(product); // Context handles quantity increment
+    addToCart(product);
     showPopup(`${product.name} added to cart 🛒`);
     setCartAnimation(true);
     setTimeout(() => setCartAnimation(false), 500);
@@ -39,7 +43,7 @@ function Products() {
 
   return (
     <section className="py-20 px-6 bg-white relative">
-      <h2 className="text-3xl font-display text-center text-primary mb-12">Our Products</h2>
+      <h2 className="text-3xl font-display text-center text-primary mb-12">Our Popular Products</h2>
 
       {popup.visible && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black text-white px-6 py-2 rounded shadow-lg z-50 animate-fade-in">
@@ -47,14 +51,18 @@ function Products() {
         </div>
       )}
 
-      <div className="grid md:grid-cols-3 gap-8">
+      {/* Horizontal scroll container */}
+      <div className="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
         {PRODUCTS.map((product) => {
           const cartItem = cart.find((item) => item.id === product.id);
           const inCartQty = cartItem ? cartItem.quantity : 0;
           const isFavorite = favorites.find((item) => item.id === product.id);
 
           return (
-            <div key={product.id} className="bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative">
+            <div
+              key={product.id}
+              className="min-w-[250px] bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative flex-shrink-0"
+            >
               <img src={product.img} alt={product.name} className="w-full h-64 object-cover" />
               <div className="p-4">
                 <h3 className="font-display text-xl text-primary">{product.name}</h3>
@@ -110,6 +118,18 @@ function Products() {
           }
           .animate-bounce {
             animation: bounce 0.4s ease;
+          }
+
+          /* Optional scrollbar styling */
+          .scrollbar-thin::-webkit-scrollbar {
+            height: 6px;
+          }
+          .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 3px;
+          }
+          .scrollbar-thin::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
           }
         `}
       </style>
