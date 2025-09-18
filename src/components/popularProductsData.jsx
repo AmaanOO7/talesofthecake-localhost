@@ -131,7 +131,7 @@ const POPULAR_PRODUCTS = [
     id: 22,
     name: "Almond cashew cookies",
     price: "₹1,300",
-    img: "https://drive.google.com/uc?export=view&id=1leb8FbRqpOL_Q5XkPeUuEwRAr9Mb-rR6",
+    img: "https://drive.google.com/file/d/1leb8FbRqpOL_Q5XkPeUuEwRAr9Mb-rR6/view?usp=sharing",
   },
 ];
 
