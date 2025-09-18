@@ -19,10 +19,10 @@ function Navbar() {
               alt="Tales of the Cake Logo"
               className="h-16 md:h-20 w-auto object-contain"
             />
-            <span className="ml-2 text-2xl md:text-3xl font-[\"Dancing_Script\"] text-white">
-              Tales of the Cake
+            <span className='ml-2 text-2xl md:text-3xl font-["Dancing_Script"] text-white'>
+            Tales of the Cake
             </span>
-          </Link>
+            </Link>
         </div>
 
         {/* Hamburger (mobile only) */}
