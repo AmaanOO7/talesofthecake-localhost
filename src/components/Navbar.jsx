@@ -12,15 +12,18 @@ function Navbar() {
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Brand Logo */}
-  <div className="flex-1 flex justify-center md:justify-start">
-    <Link to="/">
-      <img
-        src="/logo.jpg"
-        alt="Tales of the Cake Logo"
-        className="h-16 md:h-20 w-auto object-contain"
-      />
-    </Link>
-  </div>
+  <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
+  <Link to="/" className="flex items-center">
+    <img
+      src="/logo.jpg"
+      alt="Tales of the Cake Logo"
+      className="h-16 md:h-20 w-auto object-contain"
+    />
+    <span className="ml-2 text-2xl md:text-3xl font-cursive text-primary">
+      Tales of the Cake
+    </span>
+  </Link>
+</div>
 
         {/* Hamburger (mobile only) */}
         <div className="md:hidden">
