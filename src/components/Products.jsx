@@ -81,10 +81,8 @@ function Products() {
 
     const interval = setInterval(() => {
       if (container) {
-        // Scroll smoothly by 300px
         container.scrollBy({ left: 300, behavior: "smooth" });
 
-        // If reached end, go back to start
         if (
           container.scrollLeft + container.clientWidth >=
           container.scrollWidth - 10
@@ -92,7 +90,7 @@ function Products() {
           container.scrollTo({ left: 0, behavior: "smooth" });
         }
       }
-    }, 3000); // every 3 seconds
+    }, 3000);
 
     return () => {
       if (container) container.removeEventListener("scroll", updateScrollButtons);
@@ -157,43 +155,27 @@ function Products() {
                     {product.name}
                   </h3>
                   <p className="text-secondary mt-1">{product.price}</p>
+                </div>
 
-                  {/* Buttons only on hover */}
-                  <div className="mt-3 flex gap-2 relative opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={() => handleFavorite(product)}
-                      className={`px-3 py-1 rounded transition relative text-sm ${
-                        isFavorite
-                          ? "bg-pink-600 text-white"
-                          : "bg-pink-500 text-white hover:bg-pink-600"
-                      }`}
-                    >
-                      {isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
-                      {favAnimation && isFavorite && (
-                        <span className="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full px-2 py-1 text-xs animate-bounce">
-                          {favorites.length}
-                        </span>
-                      )}
-                    </button>
+                {/* ✅ Slide-up overlay buttons */}
+                <div className="absolute bottom-0 left-0 right-0 flex gap-2 justify-center bg-black/40 py-2 opacity-0 translate-y-6 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                  <button
+                    onClick={() => handleFavorite(product)}
+                    className={`px-3 py-1 rounded text-sm border border-pink-500 text-white bg-transparent hover:bg-pink-500 transition ${
+                      isFavorite ? "bg-pink-600" : ""
+                    }`}
+                  >
+                    {isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
+                  </button>
 
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className={`px-3 py-1 rounded transition relative text-sm ${
-                        inCartQty > 0
-                          ? "bg-green-600 text-white"
-                          : "bg-green-500 text-white hover:bg-green-600"
-                      }`}
-                    >
-                      {inCartQty > 0
-                        ? `🛒 ${inCartQty} in Cart`
-                        : "🛒 Add to Cart"}
-                      {cartAnimation && inCartQty > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full px-2 py-1 text-xs animate-bounce">
-                          {cart.length}
-                        </span>
-                      )}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className={`px-3 py-1 rounded text-sm border border-green-500 text-white bg-transparent hover:bg-green-500 transition ${
+                      inCartQty > 0 ? "bg-green-600" : ""
+                    }`}
+                  >
+                    {inCartQty > 0 ? `🛒 ${inCartQty}` : "🛒 Add"}
+                  </button>
                 </div>
               </div>
             );
@@ -208,12 +190,6 @@ function Products() {
             to { opacity: 1; transform: translateY(0); }
           }
           .animate-fade-in { animation: fade-in 0.3s ease-in-out; }
-
-          @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-          }
-          .animate-bounce { animation: bounce 0.4s ease; }
 
           /* Hide scrollbars */
           .hide-scrollbar::-webkit-scrollbar { display: none; }
