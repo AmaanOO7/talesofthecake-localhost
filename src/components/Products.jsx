@@ -81,7 +81,7 @@ function Products() {
 
     const interval = setInterval(() => {
       if (container) {
-        container.scrollBy({ left: 300, behavior: "smooth" });
+        container.scrollBy({ left: 600, behavior: "smooth" });
 
         if (
           container.scrollLeft + container.clientWidth >=
