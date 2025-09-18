@@ -63,7 +63,10 @@ function Products() {
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: direction === "right" ? 300 : -300, behavior: "smooth" });
+      scrollRef.current.scrollBy({
+        left: direction === "right" ? 220 : -220,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -127,7 +130,7 @@ function Products() {
         {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scroll-smooth"
+          className="flex gap-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth hide-scrollbar"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -140,7 +143,7 @@ function Products() {
             return (
               <div
                 key={product.id}
-                className="relative w-[160px] sm:w-[180px] bg-accent rounded-lg overflow-hidden shadow-md hover:scale-105 transform transition flex-shrink-0 group/item"
+                className="relative w-[160px] sm:w-[180px] bg-accent rounded-lg overflow-hidden shadow-md hover:scale-105 transform transition flex-shrink-0 group/item snap-start"
               >
                 <img src={product.img} alt={product.name} className="w-full h-36 object-cover" />
                 <div className="p-3">
@@ -184,9 +187,9 @@ function Products() {
           }
           .animate-fade-in { animation: fade-in 0.3s ease-in-out; }
 
-          .scrollbar-thin::-webkit-scrollbar { height: 6px; }
-          .scrollbar-thin::-webkit-scrollbar-thumb { background-color: #888; border-radius: 3px; }
-          .scrollbar-thin::-webkit-scrollbar-track { background-color: #f1f1f1; }
+          /* Hide scrollbars cross-browser */
+          .hide-scrollbar::-webkit-scrollbar { display: none; }
+          .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         `}
       </style>
     </section>
