@@ -157,8 +157,12 @@ function Products() {
                   <p className="text-secondary mt-1">{product.price}</p>
                 </div>
 
-                {/* ✅ Slide-up overlay buttons */}
-                <div className="absolute bottom-0 left-0 right-0 flex gap-2 justify-center bg-black/40 py-2 opacity-0 translate-y-6 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                {/* ✅ Frosted glass hover overlay with rounded corners */}
+                <div className="absolute bottom-0 left-0 right-0 flex gap-2 justify-center 
+                                bg-black/0 backdrop-blur-none py-2 opacity-0 translate-y-6 
+                                group-hover:bg-black/40 group-hover:backdrop-blur-md 
+                                group-hover:translate-y-0 group-hover:opacity-100 
+                                transition-all duration-300 rounded-b-lg">
                   <button
                     onClick={() => handleFavorite(product)}
                     className={`px-3 py-1 rounded text-sm border border-pink-500 text-white bg-transparent hover:bg-pink-500 transition ${
