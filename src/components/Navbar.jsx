@@ -19,7 +19,7 @@ function Navbar() {
               alt="Tales of the Cake Logo"
               className="h-16 md:h-20 w-auto object-contain"
             />
-            <span className='ml-2 text-2xl md:text-3xl font-["Dancing_Script"] text-white'>
+            <span className="ml-2 text-2xl md:text-3xl font-cursive text-white hidden sm:inline-block">
             Tales of the Cake
             </span>
             </Link>
