@@ -13,7 +13,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
-        display: ['Playfair Display', 'serif']
+        display: ['Playfair Display', 'serif'],
+        cursive: ['"Dancing Script"', 'cursive']
       },
       animation: {
         fadeIn: 'fadeIn 1s ease forwards'
