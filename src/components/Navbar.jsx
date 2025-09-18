@@ -60,9 +60,6 @@ function Navbar() {
   <li className="cursor-pointer hover:text-secondary">
     <a href="#contact">Contact</a>
   </li>
-  <li className="cursor-pointer hover:text-secondary">
-    <Link to="/login">Login</Link>
-  </li>
 
 
           {/* ❤️ Favorites */}
@@ -121,9 +118,6 @@ function Navbar() {
           </li>
           <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
             <a href="#contact">Contact</a>
-          </li>
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
-            <Link to="/login">Login</Link>
           </li>
 
           {/* ❤️ Favorites (mobile) */}
