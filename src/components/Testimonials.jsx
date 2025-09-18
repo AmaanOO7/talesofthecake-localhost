@@ -30,7 +30,7 @@ function Testimonials() {
     setCurrent((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
   };
 
-  // ✅ Generate multi-color sparkles
+  // ✅ Generate multi-color sparkles with random movement
   const createSparkles = () => {
     const newSparkles = Array.from({ length: 12 }).map((_, i) => ({
       id: i + Math.random(),
@@ -40,6 +40,8 @@ function Testimonials() {
       duration: Math.random() * 0.8 + 0.7,
       color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
       rotate: Math.random() * 360,
+      driftX: (Math.random() - 0.5) * 20, // Parallax horizontal drift
+      driftY: (Math.random() - 0.5) * 20, // Parallax vertical drift
     }));
     setSparkles(newSparkles);
     setTimeout(() => setSparkles([]), 1500);
@@ -75,7 +77,7 @@ function Testimonials() {
           );
         })}
 
-        {/* Multi-color Sparkles */}
+        {/* Floating sparkles with parallax */}
         {sparkles.map((s) => (
           <span
             key={s.id}
@@ -87,6 +89,8 @@ function Testimonials() {
               backgroundColor: s.color,
               transform: `rotate(${s.rotate}deg)`,
               animationDuration: `${s.duration}s`,
+              "--drift-x": `${s.driftX}px`,
+              "--drift-y": `${s.driftY}px`,
             }}
             className="absolute rounded-full opacity-80 animate-sparkle pointer-events-none"
           />
@@ -127,9 +131,9 @@ function Testimonials() {
 
       <style>{`
         @keyframes sparkle {
-          0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-          50% { transform: translateY(-10px) rotate(180deg) scale(1.2); opacity: 0.8; }
-          100% { transform: translateY(-20px) rotate(360deg) scale(0); opacity: 0; }
+          0% { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+          50% { transform: translate(var(--drift-x), var(--drift-y)) rotate(180deg) scale(1.2); opacity: 0.8; }
+          100% { transform: translate(calc(var(--drift-x) * 2), calc(var(--drift-y) * 2)) rotate(360deg) scale(0); opacity: 0; }
         }
         .animate-sparkle {
           animation-name: sparkle;
