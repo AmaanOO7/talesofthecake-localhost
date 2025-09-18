@@ -8,15 +8,15 @@ const TESTIMONIALS = [
   { name: "Karan", text: "Perfect for birthdays and events." },
 ];
 
+const SPARKLE_COLORS = ["#FFD700", "#FF6B6B", "#6BCB77", "#4D96FF", "#FF69B4"];
+
 function Testimonials() {
   const [current, setCurrent] = useState(0);
   const [sparkles, setSparkles] = useState([]);
 
   // ✅ Auto-scroll every 5 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
+    const interval = setInterval(() => nextSlide(), 5000);
     return () => clearInterval(interval);
   }, [current]);
 
@@ -24,19 +24,22 @@ function Testimonials() {
     createSparkles();
     setCurrent((prev) => (prev + 1) % TESTIMONIALS.length);
   };
+
   const prevSlide = () => {
     createSparkles();
     setCurrent((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
   };
 
-  // ✅ Generate sparkles
+  // ✅ Generate multi-color sparkles
   const createSparkles = () => {
-    const newSparkles = Array.from({ length: 10 }).map((_, i) => ({
+    const newSparkles = Array.from({ length: 12 }).map((_, i) => ({
       id: i + Math.random(),
       left: Math.random() * 100 + "%",
       top: Math.random() * 100 + "%",
-      size: Math.random() * 6 + 4, // 4-10px
-      duration: Math.random() * 0.8 + 0.7, // 0.7-1.5s
+      size: Math.random() * 6 + 4,
+      duration: Math.random() * 0.8 + 0.7,
+      color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
+      rotate: Math.random() * 360,
     }));
     setSparkles(newSparkles);
     setTimeout(() => setSparkles([]), 1500);
@@ -64,7 +67,7 @@ function Testimonials() {
           </div>
         ))}
 
-        {/* Sparkles */}
+        {/* Multi-color Sparkles */}
         {sparkles.map((s) => (
           <span
             key={s.id}
@@ -73,9 +76,11 @@ function Testimonials() {
               top: s.top,
               width: `${s.size}px`,
               height: `${s.size}px`,
+              backgroundColor: s.color,
+              transform: `rotate(${s.rotate}deg)`,
               animationDuration: `${s.duration}s`,
             }}
-            className="absolute bg-yellow-400 rounded-full opacity-80 animate-sparkle pointer-events-none"
+            className="absolute rounded-full opacity-80 animate-sparkle pointer-events-none"
           />
         ))}
       </div>
@@ -114,9 +119,9 @@ function Testimonials() {
 
       <style>{`
         @keyframes sparkle {
-          0% { transform: translateY(0) scale(1); opacity: 1; }
-          50% { transform: translateY(-10px) scale(1.2); opacity: 0.8; }
-          100% { transform: translateY(-20px) scale(0); opacity: 0; }
+          0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+          50% { transform: translateY(-10px) rotate(180deg) scale(1.2); opacity: 0.8; }
+          100% { transform: translateY(-20px) rotate(360deg) scale(0); opacity: 0; }
         }
         .animate-sparkle {
           animation-name: sparkle;
