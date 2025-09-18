@@ -10,7 +10,7 @@ function Hero() {
         Freshly baked treats delivered with love!
       </p>
       <button className="mt-6 px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition">
-        Order Now
+      <Link to="/products">Order Now</Link>
       </button>
     </section>
   );
