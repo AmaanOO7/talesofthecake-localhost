@@ -11,19 +11,19 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Brand Logo */}
-  <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
-  <Link to="/" className="flex items-center">
-    <img
-      src="/logo.jpg"
-      alt="Tales of the Cake Logo"
-      className="h-16 md:h-20 w-auto object-contain"
-    />
-    <span className="ml-2 text-2xl md:text-3xl font-cursive text-primary">
-      Tales of the Cake
-    </span>
-  </Link>
-</div>
+        {/* Brand Logo + Name */}
+        <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo.jpg"
+              alt="Tales of the Cake Logo"
+              className="h-16 md:h-20 w-auto object-contain"
+            />
+            <span className="ml-2 text-2xl md:text-3xl font-[\"Dancing_Script\"] text-white">
+              Tales of the Cake
+            </span>
+          </Link>
+        </div>
 
         {/* Hamburger (mobile only) */}
         <div className="md:hidden">
@@ -51,19 +51,18 @@ function Navbar() {
 
         {/* Desktop menu */}
         <ul className="hidden md:flex items-center gap-6">
-  <li className="cursor-pointer hover:text-secondary">
-    <Link to="/">Home</Link>
-  </li>
-  <li className="cursor-pointer hover:text-secondary">
-    <Link to="/products">Products</Link>
-  </li>
-  <li className="cursor-pointer hover:text-secondary">
-    <a href="#about">About</a>
-  </li>
-  <li className="cursor-pointer hover:text-secondary">
-    <a href="#contact">Contact</a>
-  </li>
-
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/products">Products</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <a href="#about">About</a>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <a href="#contact">Contact</a>
+          </li>
 
           {/* ❤️ Favorites */}
           <li className="relative cursor-pointer" onClick={() => setFavoritesOpen(true)}>
@@ -103,13 +102,13 @@ function Navbar() {
         ></div>
       )}
 
-      {/* Mobile Drawer Menu (Left) */}
+      {/* Mobile Drawer Menu */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-primary shadow-lg transform transition-transform duration-500 ease-in-out md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <ul className="flex flex-col gap-6 px-6 py-8">
+        <ul className="flex flex-col gap-6 px-6 py-8 overflow-y-auto h-full">
           <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
             <Link to="/">Home</Link>
           </li>
@@ -124,7 +123,13 @@ function Navbar() {
           </li>
 
           {/* ❤️ Favorites (mobile) */}
-          <li className="relative cursor-pointer" onClick={() => { setOpen(false); setFavoritesOpen(true); }}>
+          <li
+            className="relative cursor-pointer"
+            onClick={() => {
+              setOpen(false);
+              setFavoritesOpen(true);
+            }}
+          >
             ❤️
             {favorites.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
@@ -134,7 +139,13 @@ function Navbar() {
           </li>
 
           {/* 🛒 Cart (mobile) */}
-          <li className="relative cursor-pointer" onClick={() => { setOpen(false); setCartOpen(true); }}>
+          <li
+            className="relative cursor-pointer"
+            onClick={() => {
+              setOpen(false);
+              setCartOpen(true);
+            }}
+          >
             🛒
             {cart.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
@@ -149,7 +160,7 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* Cart Drawer (Right) */}
+      {/* Cart Drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
           cartOpen ? "translate-x-0" : "translate-x-full"
@@ -164,8 +175,8 @@ function Navbar() {
           {cart.length === 0 ? (
             <p className="text-gray-500">Your cart is empty</p>
           ) : (
-            cart.map((item, index) => (
-              <div key={index} className="flex justify-between items-center border-b pb-2">
+            cart.map((item) => (
+              <div key={item.id} className="flex justify-between items-center border-b pb-2">
                 <span>{item.name}</span>
 
                 {/* Quantity Controls */}
@@ -210,7 +221,7 @@ function Navbar() {
         )}
       </div>
 
-      {/* Favorites Drawer (Right) */}
+      {/* Favorites Drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
           favoritesOpen ? "translate-x-0" : "translate-x-full"
@@ -225,8 +236,8 @@ function Navbar() {
           {favorites.length === 0 ? (
             <p className="text-gray-500">No favorites yet</p>
           ) : (
-            favorites.map((item, index) => (
-              <div key={index} className="flex justify-between items-center border-b pb-2">
+            favorites.map((item) => (
+              <div key={item.id} className="flex justify-between items-center border-b pb-2">
                 <span>{item.name}</span>
                 <span className="font-semibold">{item.price}</span>
 
