@@ -3,7 +3,7 @@
 const POPULAR_PRODUCTS = [
   {
     id: 1,
-    name: "Vanilla Story Cake",
+    name: "Vanilla jar cake",
     price: "₹1,200",
     img: "/images/choco-cake.jfif",
   },
