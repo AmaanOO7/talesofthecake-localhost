@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { ShopContext } from "./ShopContext";
-import POPULAR_PRODUCTS from "./popularProductsData"; // ✅ import data
+import POPULAR_PRODUCTS from "./popularProductsData";
 
 function Products() {
   const { cart, addToCart, favorites, toggleFavorite } = useContext(ShopContext);
@@ -70,14 +70,33 @@ function Products() {
     else if (distance < -50) scroll("left");
   };
 
+  // ✅ Auto-scroll effect
   useEffect(() => {
     updateScrollButtons();
     const container = scrollRef.current;
+
     if (container) {
       container.addEventListener("scroll", updateScrollButtons);
     }
+
+    const interval = setInterval(() => {
+      if (container) {
+        // Scroll smoothly by 300px
+        container.scrollBy({ left: 300, behavior: "smooth" });
+
+        // If reached end, go back to start
+        if (
+          container.scrollLeft + container.clientWidth >=
+          container.scrollWidth - 10
+        ) {
+          container.scrollTo({ left: 0, behavior: "smooth" });
+        }
+      }
+    }, 3000); // every 3 seconds
+
     return () => {
       if (container) container.removeEventListener("scroll", updateScrollButtons);
+      clearInterval(interval);
     };
   }, []);
 
@@ -113,7 +132,7 @@ function Products() {
 
         <div
           ref={scrollRef}
-          className="flex flex-wrap gap-6 overflow-x-auto scroll-smooth hide-scrollbar"
+          className="flex gap-6 overflow-x-auto scroll-smooth hide-scrollbar"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -126,7 +145,7 @@ function Products() {
             return (
               <div
                 key={product.id}
-                className="group w-[calc(50%-12px)] sm:w-[220px] bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative flex-shrink-0"
+                className="group w-[180px] sm:w-[200px] md:w-[220px] bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative flex-shrink-0"
               >
                 <img
                   src={product.img}
@@ -134,11 +153,12 @@ function Products() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-display text-lg text-primary">
+                  <h3 className="font-display text-lg text-primary truncate">
                     {product.name}
                   </h3>
                   <p className="text-secondary mt-1">{product.price}</p>
-                  {/* ✅ Buttons only visible on hover */}
+
+                  {/* Buttons only on hover */}
                   <div className="mt-3 flex gap-2 relative opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <button
                       onClick={() => handleFavorite(product)}
@@ -195,7 +215,7 @@ function Products() {
           }
           .animate-bounce { animation: bounce 0.4s ease; }
 
-          /* ✅ Hide scrollbars */
+          /* Hide scrollbars */
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         `}
