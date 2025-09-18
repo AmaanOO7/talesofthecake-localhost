@@ -1,13 +1,34 @@
 import React, { useContext, useState } from "react";
 import { ShopContext } from "./ShopContext";
 
-// Example: 100+ products (you can replace with real data)
-const PRODUCTS = Array.from({ length: 100 }, (_, i) => ({
-  id: i + 1,
-  name: `Product ${i + 1}`,
-  price: `₹${1000 + i * 10}`,
-  img: `https://picsum.photos/300/200?random=${i + 1}`,
-}));
+// ✅ Simple array of products (easy to extend later)
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "Chocolate Delight",
+    price: "₹1200",
+    img: "https://picsum.photos/300/200?random=1",
+  },
+  {
+    id: 2,
+    name: "Vanilla Dream",
+    price: "₹1350",
+    img: "https://picsum.photos/300/200?random=2",
+  },
+  {
+    id: 3,
+    name: "Strawberry Bliss",
+    price: "₹1500",
+    img: "https://picsum.photos/300/200?random=3",
+  },
+  {
+    id: 4,
+    name: "Butterscotch Crunch",
+    price: "₹1450",
+    img: "https://picsum.photos/300/200?random=4",
+  },
+  // ✅ Add more items here anytime, just follow this format
+];
 
 function AllProducts() {
   const { cart, addToCart, favorites, toggleFavorite } = useContext(ShopContext);
@@ -52,18 +73,20 @@ function AllProducts() {
         {PRODUCTS.map((product) => (
           <div
             key={product.id}
-            className="bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative"
+            className="group bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative"
           >
             <img
               src={product.img}
               alt={product.name}
               className="w-full h-48 object-cover"
             />
+
             <div className="p-4">
               <h3 className="font-display text-xl">{product.name}</h3>
               <p className="text-secondary mt-2">{product.price}</p>
 
-              <div className="mt-4 flex gap-2 relative">
+              {/* ✅ Buttons appear only on hover */}
+              <div className="mt-4 flex gap-2 relative opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button
                   onClick={() => handleFavorite(product)}
                   className={`px-4 py-2 rounded transition relative ${
