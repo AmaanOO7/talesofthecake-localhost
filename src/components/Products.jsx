@@ -150,36 +150,49 @@ function Products() {
                   alt={product.name}
                   className="w-full h-48 object-cover"
                 />
+
+                {/* ✅ Centered hover buttons with badges */}
+                <div className="absolute inset-0 flex items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition">
+                  {/* Favorite button */}
+                  <button
+                    onClick={() => handleFavorite(product)}
+                    className={`relative p-3 rounded-full text-xl transition ${
+                      isFavorite
+                        ? "bg-pink-600 text-white"
+                        : "bg-pink-500 text-white hover:bg-pink-600"
+                    }`}
+                  >
+                    ❤️
+                    {isFavorite && (
+                      <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Cart button */}
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className={`relative p-3 rounded-full text-xl transition ${
+                      inCartQty > 0
+                        ? "bg-green-600 text-white"
+                        : "bg-green-500 text-white hover:bg-green-600"
+                    }`}
+                  >
+                    🛒
+                    {inCartQty > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                        {inCartQty}
+                      </span>
+                    )}
+                  </button>
+                </div>
+
                 <div className="p-4">
                   <h3 className="font-display text-lg text-primary truncate">
                     {product.name}
                   </h3>
                   <p className="text-secondary mt-1">{product.price}</p>
-                </div>
-
-                {/* ✅ Frosted glass hover overlay with rounded corners */}
-                <div className="absolute bottom-0 left-0 right-0 flex gap-2 justify-center 
-                                bg-black/0 backdrop-blur-none py-2 opacity-0 translate-y-6 
-                                group-hover:bg-black/40 group-hover:backdrop-blur-md 
-                                group-hover:translate-y-0 group-hover:opacity-100 
-                                transition-all duration-300 rounded-b-lg">
-                  <button
-                    onClick={() => handleFavorite(product)}
-                    className={`px-3 py-1 rounded text-sm border border-pink-500 text-white bg-transparent hover:bg-pink-500 transition ${
-                      isFavorite ? "bg-pink-600" : ""
-                    }`}
-                  >
-                    {isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
-                  </button>
-
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className={`px-3 py-1 rounded text-sm border border-green-500 text-white bg-transparent hover:bg-green-500 transition ${
-                      inCartQty > 0 ? "bg-green-600" : ""
-                    }`}
-                  >
-                    {inCartQty > 0 ? `🛒 ${inCartQty}` : "🛒 Add"}
-                  </button>
                 </div>
               </div>
             );
