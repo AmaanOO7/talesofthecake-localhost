@@ -1,34 +1,6 @@
 import React, { useContext, useState } from "react";
 import { ShopContext } from "./ShopContext";
-
-// ✅ Simple array of products (easy to extend later)
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Chocolate Delight",
-    price: "₹1200",
-    img: "https://picsum.photos/300/200?random=1",
-  },
-  {
-    id: 2,
-    name: "Vanilla Dream",
-    price: "₹1350",
-    img: "https://picsum.photos/300/200?random=2",
-  },
-  {
-    id: 3,
-    name: "Strawberry Bliss",
-    price: "₹1500",
-    img: "https://picsum.photos/300/200?random=3",
-  },
-  {
-    id: 4,
-    name: "Butterscotch Crunch",
-    price: "₹1450",
-    img: "https://picsum.photos/300/200?random=4",
-  },
-  // ✅ Add more items here anytime, just follow this format
-];
+import ALL_PRODUCTS from "./productsData";  // ✅ Importing products
 
 function AllProducts() {
   const { cart, addToCart, favorites, toggleFavorite } = useContext(ShopContext);
@@ -61,7 +33,7 @@ function AllProducts() {
 
   return (
     <section className="py-20 px-6 bg-white">
-      <h2 className="text-3xl font-display text-center mb-12">Our Products</h2>
+      <h2 className="text-3xl font-display text-center mb-12">All Products</h2>
 
       {popup.visible && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black text-white px-6 py-2 rounded shadow-lg z-50 animate-fade-in">
@@ -70,7 +42,7 @@ function AllProducts() {
       )}
 
       <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-8">
-        {PRODUCTS.map((product) => (
+        {ALL_PRODUCTS.map((product) => (
           <div
             key={product.id}
             className="group bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative"
@@ -85,7 +57,7 @@ function AllProducts() {
               <h3 className="font-display text-xl">{product.name}</h3>
               <p className="text-secondary mt-2">{product.price}</p>
 
-              {/* ✅ Buttons appear only on hover */}
+              {/* ✅ Buttons only on hover */}
               <div className="mt-4 flex gap-2 relative opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button
                   onClick={() => handleFavorite(product)}
