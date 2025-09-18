@@ -50,22 +50,30 @@ function Testimonials() {
       <h2 className="text-4xl font-display mb-12">✨ Happy Customers ✨</h2>
 
       {/* Testimonials Container */}
-      <div className="relative max-w-3xl mx-auto h-60">
-        {TESTIMONIALS.map((t, i) => (
-          <div
-            key={i}
-            className={`absolute inset-0 p-6 transition-all duration-1000 ease-in-out transform ${
-              i === current
-                ? "opacity-100 z-10 scale-105 -translate-y-2"
-                : "opacity-0 z-0 scale-95 translate-y-2"
-            }`}
-          >
-            <div className="bg-white text-primary p-8 rounded-2xl shadow-xl flex flex-col justify-center h-full transition-transform duration-700 hover:scale-105 hover:shadow-2xl">
-              <p className="mb-6 italic text-lg">&quot;{t.text}&quot;</p>
-              <h4 className="font-display font-bold text-xl">— {t.name}</h4>
+      <div className="relative max-w-3xl mx-auto h-64 perspective-1000">
+        {TESTIMONIALS.map((t, i) => {
+          const isActive = i === current;
+          const offset = i - current;
+
+          return (
+            <div
+              key={i}
+              className={`absolute inset-0 p-6 transition-all duration-1000 ease-in-out transform`}
+              style={{
+                opacity: isActive ? 1 : 0,
+                zIndex: isActive ? 10 : 0,
+                transform: `translateX(${offset * 30}%) translateY(${
+                  offset * 10
+                }px) rotateY(${offset * 10}deg) scale(${isActive ? 1 : 0.9})`,
+              }}
+            >
+              <div className="bg-white text-primary p-8 rounded-2xl shadow-xl flex flex-col justify-center h-full transition-transform duration-700 hover:scale-105 hover:shadow-2xl">
+                <p className="mb-6 italic text-lg">&quot;{t.text}&quot;</p>
+                <h4 className="font-display font-bold text-xl">— {t.name}</h4>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Multi-color Sparkles */}
         {sparkles.map((s) => (
@@ -126,6 +134,9 @@ function Testimonials() {
         .animate-sparkle {
           animation-name: sparkle;
           animation-timing-function: ease-out;
+        }
+        .perspective-1000 {
+          perspective: 1000px;
         }
       `}</style>
     </section>
