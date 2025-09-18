@@ -1,18 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { ShopContext } from "./ShopContext";
-
-const PRODUCTS = [
-  { id: 1, name: "Vanilla Story Cake", price: "₹1,200", img: "/images/choco-cake.jfif" },
-  { id: 2, name: "Chocolate Chronicle", price: "₹1,500", img: "/images/pineapple-cake.jfif" },
-  { id: 3, name: "Strawberry Bliss", price: "₹1,300", img: "/images/vanila-cake.jfif" },
-  { id: 4, name: "Blueberry Heaven", price: "₹1,400", img: "/images/blueberry-cake.jfif" },
-  { id: 5, name: "Lemon Delight", price: "₹1,250", img: "/images/lemon-cake.jfif" },
-  { id: 6, name: "Red Velvet Charm", price: "₹1,600", img: "/images/red-velvet-cake.jfif" },
-  { id: 7, name: "Coffee Crunch", price: "₹1,350", img: "/images/coffee-cake.jfif" },
-  { id: 8, name: "Caramel Swirl", price: "₹1,450", img: "/images/caramel-cake.jfif" },
-  { id: 9, name: "Pistachio Dream", price: "₹1,550", img: "/images/pistachio-cake.jfif" },
-  { id: 10, name: "Mango Melody", price: "₹1,300", img: "/images/mango-cake.jfif" },
-];
+import POPULAR_PRODUCTS from "./popularProductsData"; // ✅ import data
 
 function Products() {
   const { cart, addToCart, favorites, toggleFavorite } = useContext(ShopContext);
@@ -24,7 +12,6 @@ function Products() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // For touch swipe
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -56,7 +43,8 @@ function Products() {
     if (scrollRef.current) {
       setCanScrollLeft(scrollRef.current.scrollLeft > 0);
       setCanScrollRight(
-        scrollRef.current.scrollLeft < scrollRef.current.scrollWidth - scrollRef.current.clientWidth
+        scrollRef.current.scrollLeft <
+          scrollRef.current.scrollWidth - scrollRef.current.clientWidth
       );
     }
   };
@@ -64,25 +52,22 @@ function Products() {
   const scroll = (direction) => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: direction === "right" ? 220 : -220,
+        left: direction === "right" ? 300 : -300,
         behavior: "smooth",
       });
     }
   };
 
-  // Touch events for swipe
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
-
   const handleTouchMove = (e) => {
     touchEndX.current = e.touches[0].clientX;
   };
-
   const handleTouchEnd = () => {
     const distance = touchStartX.current - touchEndX.current;
-    if (distance > 50) scroll("right"); // swipe left
-    else if (distance < -50) scroll("left"); // swipe right
+    if (distance > 50) scroll("right");
+    else if (distance < -50) scroll("left");
   };
 
   useEffect(() => {
@@ -97,8 +82,8 @@ function Products() {
   }, []);
 
   return (
-    <section className="py-16 px-6 bg-white relative">
-      <h2 className="text-3xl font-display text-center text-primary mb-10">
+    <section className="py-20 px-6 bg-white relative">
+      <h2 className="text-3xl font-display text-center text-primary mb-12">
         Our Popular Products
       </h2>
 
@@ -109,11 +94,10 @@ function Products() {
       )}
 
       <div className="relative group">
-        {/* Scroll buttons (desktop only) */}
         {canScrollLeft && (
           <button
             onClick={() => scroll("left")}
-            className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-20 p-2 bg-black bg-opacity-50 text-white rounded-full opacity-80 hover:opacity-100 transition"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-20 p-2 bg-black bg-opacity-50 text-white rounded-full opacity-80 hover:opacity-100 transition"
           >
             ◀
           </button>
@@ -121,21 +105,20 @@ function Products() {
         {canScrollRight && (
           <button
             onClick={() => scroll("right")}
-            className="hidden md:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-20 p-2 bg-black bg-opacity-50 text-white rounded-full opacity-80 hover:opacity-100 transition"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 p-2 bg-black bg-opacity-50 text-white rounded-full opacity-80 hover:opacity-100 transition"
           >
             ▶
           </button>
         )}
 
-        {/* Scroll container */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth hide-scrollbar"
+          className="flex flex-wrap gap-6 overflow-x-auto scroll-smooth hide-scrollbar"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {PRODUCTS.map((product) => {
+          {POPULAR_PRODUCTS.map((product) => {
             const cartItem = cart.find((item) => item.id === product.id);
             const inCartQty = cartItem ? cartItem.quantity : 0;
             const isFavorite = favorites.find((item) => item.id === product.id);
@@ -143,35 +126,54 @@ function Products() {
             return (
               <div
                 key={product.id}
-                className="relative w-[160px] sm:w-[180px] bg-accent rounded-lg overflow-hidden shadow-md hover:scale-105 transform transition flex-shrink-0 group/item snap-start"
+                className="group w-[calc(50%-12px)] sm:w-[220px] bg-accent rounded-lg overflow-hidden shadow-lg hover:scale-105 transform transition relative flex-shrink-0"
               >
-                <img src={product.img} alt={product.name} className="w-full h-36 object-cover" />
-                <div className="p-3">
-                  <h3 className="font-display text-base text-primary truncate">{product.name}</h3>
-                  <p className="text-secondary text-sm mt-1">{product.price}</p>
-                </div>
+                <img
+                  src={product.img}
+                  alt={product.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-display text-lg text-primary">
+                    {product.name}
+                  </h3>
+                  <p className="text-secondary mt-1">{product.price}</p>
+                  {/* ✅ Buttons only visible on hover */}
+                  <div className="mt-3 flex gap-2 relative opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={() => handleFavorite(product)}
+                      className={`px-3 py-1 rounded transition relative text-sm ${
+                        isFavorite
+                          ? "bg-pink-600 text-white"
+                          : "bg-pink-500 text-white hover:bg-pink-600"
+                      }`}
+                    >
+                      {isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
+                      {favAnimation && isFavorite && (
+                        <span className="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full px-2 py-1 text-xs animate-bounce">
+                          {favorites.length}
+                        </span>
+                      )}
+                    </button>
 
-                {/* Action buttons (hidden until hover/tap) */}
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2 opacity-0 group-hover/item:opacity-100 transition">
-                  <button
-                    onClick={() => handleFavorite(product)}
-                    className={`px-2 py-1 rounded text-xs ${
-                      isFavorite ? "bg-pink-600 text-white" : "bg-pink-500 text-white hover:bg-pink-600"
-                    }`}
-                  >
-                    {isFavorite ? "❤️" : "🤍"}
-                  </button>
-
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className={`px-2 py-1 rounded text-xs ${
-                      inCartQty > 0
-                        ? "bg-green-600 text-white"
-                        : "bg-green-500 text-white hover:bg-green-600"
-                    }`}
-                  >
-                    🛒
-                  </button>
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className={`px-3 py-1 rounded transition relative text-sm ${
+                        inCartQty > 0
+                          ? "bg-green-600 text-white"
+                          : "bg-green-500 text-white hover:bg-green-600"
+                      }`}
+                    >
+                      {inCartQty > 0
+                        ? `🛒 ${inCartQty} in Cart`
+                        : "🛒 Add to Cart"}
+                      {cartAnimation && inCartQty > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full px-2 py-1 text-xs animate-bounce">
+                          {cart.length}
+                        </span>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             );
@@ -187,7 +189,13 @@ function Products() {
           }
           .animate-fade-in { animation: fade-in 0.3s ease-in-out; }
 
-          /* Hide scrollbars cross-browser */
+          @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+          }
+          .animate-bounce { animation: bounce 0.4s ease; }
+
+          /* ✅ Hide scrollbars */
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         `}
