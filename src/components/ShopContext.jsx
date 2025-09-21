@@ -1,10 +1,12 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
+import ALL_PRODUCTS from "./productsData"; // ✅ import here
 
 export const ShopContext = createContext();
 
 export function ShopProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // ✅ global search state
 
   // Cart functions with quantity support
   const addToCart = (product) => {
@@ -53,6 +55,11 @@ export function ShopProvider({ children }) {
     }
   };
 
+  // ✅ Products filtered globally by searchQuery
+  const filteredProducts = ALL_PRODUCTS.filter((p) =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <ShopContext.Provider
       value={{
@@ -63,6 +70,9 @@ export function ShopProvider({ children }) {
         addToFavorites,
         removeFromFavorites,
         toggleFavorite,
+        searchQuery,
+        setSearchQuery,
+        filteredProducts, // ✅ share filtered list
       }}
     >
       {children}
