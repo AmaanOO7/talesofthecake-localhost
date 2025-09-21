@@ -8,6 +8,7 @@ import {
   ShoppingCartIcon,
   MagnifyingGlassIcon,
   UserIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 function Navbar() {
@@ -199,14 +200,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* ✅ Background overlay with blur */}
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30"
-          onClick={() => setOpen(false)}
-        ></div>
-      )}
-
       {/* ✅ Mobile Menu with effects */}
       <div
         ref={menuRef}
@@ -245,7 +238,8 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* ✅ Cart, Favorites, Search drawers remain the same */}
+      {/* ✅ Cart Drawer (unchanged) */}
+      {/* ... keep your Cart, Favorites, Search drawers same as before ... */}
     </nav>
   );
 }
