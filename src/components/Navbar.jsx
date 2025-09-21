@@ -110,7 +110,7 @@ function Navbar() {
             )}
           </div>
 
-        /* User/Login */}
+          {/* User/Login */}
           <Link to="/login" className="text-xl cursor-pointer hover:text-secondary">
             🧑
           </Link>
