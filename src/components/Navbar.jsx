@@ -177,15 +177,39 @@ function Navbar() {
         </ul>
 
         {/* Mobile right icons */}
-        <div className="flex items-center gap-4 md:hidden">
-          <MagnifyingGlassIcon className="h-6 w-6 cursor-pointer" onClick={openSearch} />
-          <HeartIcon className="h-6 w-6 cursor-pointer" onClick={openFavorites} />
-          <ShoppingCartIcon className="h-6 w-6 cursor-pointer" onClick={openCart} />
-          <Link to="/login">
-            <UserIcon className="h-6 w-6 cursor-pointer" />
-          </Link>
-        </div>
-      </div>
+<div className="flex items-center gap-4 md:hidden">
+  {/* Search */}
+  <MagnifyingGlassIcon
+    className="h-6 w-6 cursor-pointer"
+    onClick={openSearch}
+  />
+
+  {/* Favorites */}
+  <div className="relative cursor-pointer" onClick={openFavorites}>
+    <HeartIcon className="h-6 w-6 cursor-pointer" />
+    {favorites.length > 0 && (
+      <span className="absolute -top-2 -right-3 bg-pink-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
+        {favorites.length}
+      </span>
+    )}
+  </div>
+
+  {/* Cart */}
+  <div className="relative cursor-pointer" onClick={openCart}>
+    <ShoppingCartIcon className="h-6 w-6 cursor-pointer" />
+    {cart.length > 0 && (
+      <span className="absolute -top-2 -right-3 bg-green-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
+        {cart.reduce((sum, item) => sum + item.quantity, 0)}
+      </span>
+    )}
+  </div>
+
+  {/* Login */}
+  <Link to="/login">
+    <UserIcon className="h-6 w-6 cursor-pointer" />
+  </Link>
+</div>
+
 
       {/* ✅ Mobile Menu */}
       <div
