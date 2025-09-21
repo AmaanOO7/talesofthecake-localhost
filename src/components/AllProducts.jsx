@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
 import { ShopContext } from "./ShopContext";
-import ALL_PRODUCTS from "./productsData";
 
-function AllProducts({ searchTerm }) {
-  const { cart, addToCart, favorites, toggleFavorite } =
+function AllProducts() {
+  const { cart, addToCart, favorites, toggleFavorite, filteredProducts } =
     useContext(ShopContext);
   const [popup, setPopup] = useState({ visible: false, message: "" });
   const [cartAnimation, setCartAnimation] = useState(false);
@@ -31,11 +30,6 @@ function AllProducts({ searchTerm }) {
     setCartAnimation(true);
     setTimeout(() => setCartAnimation(false), 500);
   };
-
-  // ✅ Filter by searchTerm
-  const filteredProducts = ALL_PRODUCTS.filter((p) =>
-    p.name.toLowerCase().includes((searchTerm || "").toLowerCase())
-  );
 
   return (
     <section className="py-20 px-6 bg-white">
