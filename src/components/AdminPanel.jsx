@@ -1,43 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "./ShopContext";
+import { useToast } from "./ToastContext"; // ⬅️ Import global toast hook
 
 const AdminPanel = () => {
   const { products, updateDiscount } = useShop();
+  const { showToast } = useToast(); // ⬅️ Get global showToast
   const navigate = useNavigate();
-
-  // ✅ Toast state
-  const [toast, setToast] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("isAdminLoggedIn");
 
-    // ✅ Show toast
-    setToast("✅ Logged out successfully!");
+    // ✅ Global toast instead of local state
+    showToast("✅ Logged out successfully!", "success");
 
-    // Redirect after short delay
     setTimeout(() => {
       navigate("/login");
     }, 2000);
   };
 
-  // ✅ Auto hide toast after 3 sec
-  useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => setToast(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [toast]);
+  const handleDiscountChange = (id, value) => {
+    updateDiscount(id, value);
+    showToast("🎉 Discount updated!", "info"); // ✅ Show toast when discount changes
+  };
 
   return (
     <div className="p-6 max-w-4xl mx-auto relative">
-      {/* 🔹 Toast Notification */}
-      {toast && (
-        <div className="fixed top-6 right-6 bg-green-500 text-white px-4 py-2 rounded shadow-lg transition-opacity duration-500">
-          {toast}
-        </div>
-      )}
-
       {/* 🔹 Logout Button */}
       <button
         onClick={handleLogout}
@@ -67,7 +55,7 @@ const AdminPanel = () => {
                   value={p.discount}
                   min="0"
                   max="100"
-                  onChange={(e) => updateDiscount(p.id, e.target.value)}
+                  onChange={(e) => handleDiscountChange(p.id, e.target.value)}
                   className="border px-2 py-1 w-20 text-center"
                 />
               </td>
