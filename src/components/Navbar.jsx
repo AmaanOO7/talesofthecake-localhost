@@ -176,7 +176,7 @@ function Navbar() {
           </li>
         </ul>
 
-        {/* Mobile right icons */}
+        {/* ✅ Mobile right icons */}
 <div className="flex items-center gap-4 md:hidden">
   {/* Search */}
   <MagnifyingGlassIcon
@@ -188,7 +188,7 @@ function Navbar() {
   <div className="relative cursor-pointer" onClick={openFavorites}>
     <HeartIcon className="h-6 w-6 cursor-pointer" />
     {favorites.length > 0 && (
-      <span className="absolute -top-2 -right-3 bg-pink-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      <span className="absolute -top-2 -right-2 bg-pink-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
         {favorites.length}
       </span>
     )}
@@ -198,7 +198,7 @@ function Navbar() {
   <div className="relative cursor-pointer" onClick={openCart}>
     <ShoppingCartIcon className="h-6 w-6 cursor-pointer" />
     {cart.length > 0 && (
-      <span className="absolute -top-2 -right-3 bg-green-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      <span className="absolute -top-2 -right-2 bg-green-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
         {cart.reduce((sum, item) => sum + item.quantity, 0)}
       </span>
     )}
@@ -209,7 +209,6 @@ function Navbar() {
     <UserIcon className="h-6 w-6 cursor-pointer" />
   </Link>
 </div>
-
 
       {/* ✅ Mobile Menu */}
       <div
