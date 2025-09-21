@@ -1,32 +1,20 @@
 import React, { useState, useContext } from "react";
 import { ShopContext } from "./ShopContext";
 import { Link } from "react-router-dom";
+import { FaUser, FaShoppingCart, FaSearch } from "react-icons/fa"; // icons
 
 function Navbar() {
   const [open, setOpen] = useState(false); // mobile menu
   const [cartOpen, setCartOpen] = useState(false); // cart drawer
   const [favoritesOpen, setFavoritesOpen] = useState(false); // favorites drawer
+  const [searchOpen, setSearchOpen] = useState(false); // search modal/drawer
   const { cart, favorites, addToCart, removeFromCart, removeFromFavorites } = useContext(ShopContext);
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Brand Logo + Name */}
-        <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
-          <Link to="/" className="flex items-center">
-            <img
-              src="/logo.jpg"
-              alt="Tales of the Cake Logo"
-              className="h-16 md:h-20 w-auto object-contain"
-            />
-            <span className="ml-2 text-2xl md:text-3xl font-cursive text-white hidden sm:inline-block">
-            Tales of the Cake
-            </span>
-            </Link>
-        </div>
-
-        {/* Hamburger (mobile only) */}
-        <div className="md:hidden">
+        {/* Hamburger (mobile only, now on left side) */}
+        <div className="md:hidden flex items-center">
           <button
             onClick={() => setOpen(!open)}
             className="relative w-8 h-8 flex items-center justify-center"
@@ -47,6 +35,20 @@ function Navbar() {
               }`}
             ></span>
           </button>
+        </div>
+
+        {/* Brand Logo + Name */}
+        <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo.jpg"
+              alt="Tales of the Cake Logo"
+              className="h-16 md:h-20 w-auto object-contain"
+            />
+            <span className="ml-2 text-2xl md:text-3xl font-cursive text-white hidden sm:inline-block">
+              Tales of the Cake
+            </span>
+          </Link>
         </div>
 
         {/* Desktop menu */}
@@ -88,21 +90,46 @@ function Navbar() {
             <Link to="/login">Login</Link>
           </li>
         </ul>
+
+        {/* Mobile right-side icons (user, cart, search) */}
+        <div className="flex items-center gap-4 md:hidden">
+          {/* User/Login */}
+          <Link to="/login">
+            <FaUser className="text-xl cursor-pointer hover:text-secondary" />
+          </Link>
+
+          {/* Cart */}
+          <div className="relative cursor-pointer" onClick={() => setCartOpen(true)}>
+            <FaShoppingCart className="text-xl hover:text-secondary" />
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                {cart.length}
+              </span>
+            )}
+          </div>
+
+          {/* Search */}
+          <FaSearch
+            className="text-xl cursor-pointer hover:text-secondary"
+            onClick={() => setSearchOpen(true)}
+          />
+        </div>
       </div>
 
       {/* Background Overlay */}
-      {(open || cartOpen || favoritesOpen) && (
+      {(open || cartOpen || favoritesOpen || searchOpen) && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-500 md:hidden"
           onClick={() => {
             setOpen(false);
             setCartOpen(false);
             setFavoritesOpen(false);
+            setSearchOpen(false);
           }}
         ></div>
       )}
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu (left side) */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-primary shadow-lg transform transition-transform duration-500 ease-in-out md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
@@ -121,46 +148,10 @@ function Navbar() {
           <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
             <a href="#contact">Contact</a>
           </li>
-
-          {/* ❤️ Favorites (mobile) */}
-          <li
-            className="relative cursor-pointer"
-            onClick={() => {
-              setOpen(false);
-              setFavoritesOpen(true);
-            }}
-          >
-            ❤️
-            {favorites.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {favorites.length}
-              </span>
-            )}
-          </li>
-
-          {/* 🛒 Cart (mobile) */}
-          <li
-            className="relative cursor-pointer"
-            onClick={() => {
-              setOpen(false);
-              setCartOpen(true);
-            }}
-          >
-            🛒
-            {cart.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {cart.length}
-              </span>
-            )}
-          </li>
-
-          <li className="cursor-pointer hover:text-secondary" onClick={() => setOpen(false)}>
-            <Link to="/login">Login</Link>
-          </li>
         </ul>
       </div>
 
-      {/* Cart Drawer */}
+      {/* Cart Drawer (right) */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
           cartOpen ? "translate-x-0" : "translate-x-full"
@@ -221,7 +212,7 @@ function Navbar() {
         )}
       </div>
 
-      {/* Favorites Drawer */}
+      {/* Favorites Drawer (right) */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
           favoritesOpen ? "translate-x-0" : "translate-x-full"
@@ -251,6 +242,26 @@ function Navbar() {
               </div>
             ))
           )}
+        </div>
+      </div>
+
+      {/* Search Drawer (right) */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
+          searchOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-lg font-bold">Search Products</h2>
+          <button onClick={() => setSearchOpen(false)} className="text-xl">✖</button>
+        </div>
+
+        <div className="p-4">
+          <input
+            type="text"
+            placeholder="Search for cakes..."
+            className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-secondary"
+          />
         </div>
       </div>
     </nav>
