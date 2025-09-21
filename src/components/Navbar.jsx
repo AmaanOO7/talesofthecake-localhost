@@ -1,15 +1,23 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { ShopContext } from "./ShopContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [favoritesOpen, setFavoritesOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const { cart, favorites, removeFromCart } = useContext(ShopContext);
+
+  const {
+    cart,
+    favorites,
+    removeFromCart,
+    searchQuery,
+    setSearchQuery,
+  } = useContext(ShopContext);
 
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   // ✅ Close drawer if clicked outside
   useEffect(() => {
@@ -25,6 +33,18 @@ function Navbar() {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
+
+  // ✅ Handle Search
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === "Enter") {
+      navigate("/products"); // redirect to products page
+      setSearchOpen(false); // close overlay
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
@@ -236,6 +256,9 @@ function Navbar() {
             <input
               type="text"
               placeholder="Search products..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onKeyDown={handleSearchSubmit}
               className="w-full border border-gray-300 rounded p-2"
             />
           </div>
