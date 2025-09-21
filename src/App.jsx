@@ -15,11 +15,13 @@ import AdminPanel from "./components/AdminPanel"; // ✅ Import Admin Panel
 import { ShopProvider } from "./components/ShopContext";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+  
   return (
     <ShopProvider>
       <Router>
         {/* Navbar always visible */}
-        <Navbar />
+        <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
         <div className="pt-20">
           <Routes>
@@ -38,7 +40,9 @@ function App() {
             />
 
             {/* All Products Page */}
-            <Route path="/products" element={<AllProducts />} />
+            <Route path="/products"
+              element={<AllProducts searchTerm={searchTerm} />}
+            />
 
             {/* Login/Auth */}
             <Route path="/login" element={<Auth />} />
