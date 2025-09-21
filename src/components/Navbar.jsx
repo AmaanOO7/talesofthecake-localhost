@@ -1,318 +1,181 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import { ShopContext } from "./ShopContext";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useShop } from "./ShopContext";
+import { ShoppingCart, Heart, Menu, X } from "lucide-react";
 
-function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [favoritesOpen, setFavoritesOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+const Navbar = ({ searchTerm, setSearchTerm }) => {
+  const { cart, removeFromCart, favorites } = useShop();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const [cartVisible, setCartVisible] = useState(false);
-  const [favoritesVisible, setFavoritesVisible] = useState(false);
-  const [searchVisible, setSearchVisible] = useState(false);
-
-  const {
-    cart,
-    favorites,
-    removeFromCart,
-    toggleFavorite,
-    searchQuery,
-    setSearchQuery,
-  } = useContext(ShopContext);
-
-  const menuRef = useRef(null);
-  const cartRef = useRef(null);
-  const favoritesRef = useRef(null);
-  const searchRef = useRef(null);
-
-  const navigate = useNavigate();
-
-  // ✅ Show drawer with fade before closing
-  const openCart = () => {
-    setCartVisible(true);
-    setTimeout(() => setCartOpen(true), 10);
-  };
-  const closeCart = () => {
-    setCartOpen(false);
-    setTimeout(() => setCartVisible(false), 300);
-  };
-
-  const openFavorites = () => {
-    setFavoritesVisible(true);
-    setTimeout(() => setFavoritesOpen(true), 10);
-  };
-  const closeFavorites = () => {
-    setFavoritesOpen(false);
-    setTimeout(() => setFavoritesVisible(false), 300);
-  };
-
-  const openSearch = () => {
-    setSearchVisible(true);
-    setTimeout(() => setSearchOpen(true), 10);
-  };
-  const closeSearch = () => {
-    setSearchOpen(false);
-    setTimeout(() => setSearchVisible(false), 300);
-  };
-
-  // ✅ Close all drawers if clicked outside or ESC pressed
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-      if (cartRef.current && !cartRef.current.contains(e.target)) {
-        closeCart();
-      }
-      if (favoritesRef.current && !favoritesRef.current.contains(e.target)) {
-        closeFavorites();
-      }
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        closeSearch();
-      }
-    };
-
-    const handleEsc = (e) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        closeCart();
-        closeFavorites();
-        closeSearch();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEsc);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEsc);
-    };
-  }, []);
-
-  // ✅ Handle Search
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSearchSubmit = (e) => {
-    if (e.key === "Enter") {
-      navigate("/products"); // redirect to products page
-      closeSearch(); // close overlay
-    }
-  };
+  // ✅ Calculate total items in cart
+  const totalCartItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* ✅ Hamburger (mobile only) */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setOpen(!open)}
-            className="relative w-8 h-8 flex flex-col justify-between items-center"
-          >
-            <span
-              className={`h-0.5 w-6 bg-white rounded transition-transform duration-300 ${
-                open ? "rotate-45 translate-y-2" : ""
-              }`}
-            ></span>
-            <span
-              className={`h-0.5 w-6 bg-white rounded transition-all duration-300 ${
-                open ? "opacity-0" : "opacity-100"
-              }`}
-            ></span>
-            <span
-              className={`h-0.5 w-6 bg-white rounded transition-transform duration-300 ${
-                open ? "-rotate-45 -translate-y-2" : ""
-              }`}
-            ></span>
-          </button>
+    <nav className="bg-pink-200 shadow-md fixed top-0 left-0 right-0 z-50">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl font-bold text-pink-700 hover:text-pink-900"
+        >
+          Tales of the Cake
+        </Link>
+
+        {/* Search Bar */}
+        <div className="hidden md:flex flex-1 mx-6">
+          <input
+            type="text"
+            placeholder="Search cakes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-pink-400"
+          />
         </div>
 
-        {/* Brand Logo */}
-        <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
-          <Link to="/" className="flex items-center">
-            <img
-              src="/logo.jpg"
-              alt="Tales of the Cake Logo"
-              className="h-16 md:h-20 w-auto object-contain"
-            />
-            <span className="ml-2 text-2xl md:text-3xl font-cursive text-white hidden sm:inline-block">
-              Tales of the Cake
-            </span>
-          </Link>
-        </div>
-
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-6">
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/products">Products</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <a href="#about">About</a>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <a href="#contact">Contact</a>
-          </li>
-
-          {/* ❤️ Favorites */}
-          <li className="relative cursor-pointer" onClick={openFavorites}>
-            ❤️
-            {favorites.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {favorites.length}
-              </span>
-            )}
-          </li>
-
-          {/* 🛒 Cart */}
-          <li className="relative cursor-pointer" onClick={openCart}>
-            🛒
-            {cart.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {cart.reduce((sum, item) => sum + item.quantity, 0)}
-              </span>
-            )}
-          </li>
-
-          {/* 🔍 Search */}
-          <li
-            className="cursor-pointer hover:text-secondary"
-            onClick={openSearch}
-          >
-            🔍
-          </li>
-
-          {/* 👤 Login */}
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/login">👤</Link>
-          </li>
-        </ul>
-
-        {/* ✅ Mobile right-side icons */}
-        <div className="flex items-center gap-4 md:hidden">
-          {/* Search */}
-          <span
-            className="text-xl cursor-pointer hover:text-secondary"
-            onClick={openSearch}
-          >
-            🔍
-          </span>
-
+        {/* Icons */}
+        <div className="flex items-center space-x-4">
           {/* Favorites */}
-          <div className="relative cursor-pointer" onClick={openFavorites}>
-            <span className="text-xl hover:text-secondary">❤️</span>
+          <Link to="/favorites" className="relative">
+            <Heart className="h-6 w-6 text-pink-600 hover:text-pink-800 cursor-pointer" />
             {favorites.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+              <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-xs px-2 py-0.5 rounded-full">
                 {favorites.length}
               </span>
             )}
-          </div>
+          </Link>
 
           {/* Cart */}
-          <div className="relative cursor-pointer" onClick={openCart}>
-            <span className="text-xl hover:text-secondary">🛒</span>
-            {cart.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+          <div
+            className="relative cursor-pointer"
+            onClick={() => setIsCartOpen(!isCartOpen)}
+          >
+            <ShoppingCart className="h-6 w-6 text-pink-600 hover:text-pink-800" />
+            {totalCartItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-xs px-2 py-0.5 rounded-full">
+                {totalCartItems}
               </span>
             )}
           </div>
 
-          {/* Login */}
-          <Link to="/login" className="text-xl cursor-pointer hover:text-secondary">
-            👤
-          </Link>
+          {/* Mobile Menu */}
+          <button
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-pink-700" />
+            ) : (
+              <Menu className="h-6 w-6 text-pink-700" />
+            )}
+          </button>
         </div>
       </div>
 
-      {/* ✅ Mobile Drawer (slide-down animation) */}
-      <div
-        ref={menuRef}
-        className={`absolute top-full left-0 w-full bg-primary shadow-lg transform transition-all duration-500 ease-in-out md:hidden overflow-hidden ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <ul className="flex flex-col gap-6 px-6 py-6">
-          <li onClick={() => setOpen(false)} className="cursor-pointer hover:text-secondary">
-            <Link to="/">Home</Link>
-          </li>
-          <li onClick={() => setOpen(false)} className="cursor-pointer hover:text-secondary">
-            <Link to="/products">Products</Link>
-          </li>
-          <li onClick={() => setOpen(false)} className="cursor-pointer hover:text-secondary">
-            <a href="#about">About</a>
-          </li>
-          <li onClick={() => setOpen(false)} className="cursor-pointer hover:text-secondary">
-            <a href="#contact">Contact</a>
-          </li>
-        </ul>
-      </div>
+      {/* Mobile Search */}
+      {isMenuOpen && (
+        <div className="md:hidden px-4 pb-3">
+          <input
+            type="text"
+            placeholder="Search cakes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-pink-400"
+          />
+        </div>
+      )}
 
-      {/* ✅ Cart Drawer with Discounts */}
-      {cartVisible && (
-        <div
-          ref={cartRef}
-          className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-300 ease-in-out ${
-            cartOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-          }`}
-        >
-          <div className="flex justify-between items-center px-4 py-3 border-b">
-            <h2 className="text-lg font-bold">Your Cart</h2>
-            <button onClick={closeCart} className="text-xl">✖</button>
-          </div>
-          <div className="p-4 overflow-y-auto h-[calc(100%-220px)]">
-            {cart.length === 0 ? (
-              <p className="text-gray-500">Your cart is empty</p>
-            ) : (
-              <ul className="space-y-4">
-                {cart.map((item) => {
-                  const productDiscount = item.discount || 0;
-                  const originalPrice = item.price * item.quantity;
-                  const discountedPrice = originalPrice * (1 - productDiscount);
+      {/* Mobile Menu Links */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-pink-100 px-4 py-2 space-y-2">
+          <Link
+            to="/"
+            className="block text-pink-700 hover:text-pink-900"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            to="/products"
+            className="block text-pink-700 hover:text-pink-900"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Products
+          </Link>
+          <Link
+            to="/favorites"
+            className="block text-pink-700 hover:text-pink-900"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Favorites
+          </Link>
+          <Link
+            to="/login"
+            className="block text-pink-700 hover:text-pink-900"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Login
+          </Link>
+        </div>
+      )}
 
-                  return (
-                    <li key={item.id} className="flex items-center justify-between">
-                      <div>
-                        <p className="font-semibold">{item.name}</p>
-                        <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
-                        {productDiscount > 0 ? (
-                          <>
-                            <p className="text-sm text-gray-400 line-through">
-                              ₹{originalPrice}
-                            </p>
-                            <p className="text-sm text-green-600 font-semibold">
-                              ₹{discountedPrice.toFixed(2)} ({productDiscount * 100}% OFF)
-                            </p>
-                          </>
-                        ) : (
-                          <p className="text-sm text-gray-600">
+      {/* Cart Sidebar */}
+      {isCartOpen && (
+        <div className="fixed top-0 right-0 w-80 h-full bg-white shadow-lg p-4 z-50 overflow-y-auto">
+          <h2 className="text-xl font-bold mb-4">Shopping Cart</h2>
+          {cart.length === 0 ? (
+            <p className="text-gray-500">Your cart is empty.</p>
+          ) : (
+            <ul className="space-y-4">
+              {cart.map((item) => {
+                const productDiscount = Number(item.discount) || 0;
+                const price = Number(item.price) || 0;
+                const originalPrice = price * item.quantity;
+                const discountedPrice =
+                  originalPrice * (1 - productDiscount / 100);
+
+                return (
+                  <li key={item.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold">{item.name}</p>
+                      <p className="text-sm text-gray-600">
+                        Qty: {item.quantity}
+                      </p>
+                      {productDiscount > 0 ? (
+                        <>
+                          <p className="text-sm text-gray-400 line-through">
                             ₹{originalPrice.toFixed(2)}
                           </p>
-                        )}
-                      </div>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                      >
-                        Remove
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
+                          <p className="text-sm text-green-600 font-semibold">
+                            ₹{discountedPrice.toFixed(2)} ({productDiscount}% OFF)
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-sm text-gray-600">
+                          ₹{originalPrice.toFixed(2)}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
 
           {/* ✅ Bill Summary */}
           {cart.length > 0 && (() => {
             const subtotal = cart.reduce((sum, item) => {
-              const productDiscount = item.discount || 0;
-              return sum + item.price * item.quantity * (1 - productDiscount);
+              const productDiscount = Number(item.discount) || 0;
+              const price = Number(item.price) || 0;
+              const finalPrice =
+                price * item.quantity * (1 - productDiscount / 100);
+              return sum + finalPrice;
             }, 0);
 
             const packagingCharge = subtotal > 0 ? 50 : 0;
@@ -350,69 +213,8 @@ function Navbar() {
           })()}
         </div>
       )}
-
-      {/* ✅ Favorites Drawer */}
-      {favoritesVisible && (
-        <div
-          ref={favoritesRef}
-          className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-300 ease-in-out ${
-            favoritesOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-          }`}
-        >
-          <div className="flex justify-between items-center px-4 py-3 border-b">
-            <h2 className="text-lg font-bold">Your Favorites</h2>
-            <button onClick={closeFavorites} className="text-xl">✖</button>
-          </div>
-          <div className="p-4 overflow-y-auto h-[calc(100%-60px)]">
-            {favorites.length === 0 ? (
-              <p className="text-gray-500">No favorites yet 💔</p>
-            ) : (
-              <ul className="space-y-4">
-                {favorites.map((item) => (
-                  <li key={item.id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold">{item.name}</p>
-                      <p className="text-sm text-gray-600">{item.price}</p>
-                    </div>
-                    <button
-                      onClick={() => toggleFavorite(item)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                    >
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ✅ Search Overlay */}
-      {searchVisible && (
-        <div
-          className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 transition-opacity duration-300 ${
-            searchOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <div
-            ref={searchRef}
-            className="bg-white w-full max-w-lg rounded-lg shadow-lg p-4 relative"
-          >
-            <button onClick={closeSearch} className="absolute top-2 right-2 text-xl">✖</button>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onKeyDown={handleSearchSubmit}
-              className="w-full border border-gray-300 rounded p-2 text-black placeholder-gray-400 focus:outline-none"
-            />
-          </div>
-        </div>
-      )}
     </nav>
   );
-}
+};
 
 export default Navbar;
