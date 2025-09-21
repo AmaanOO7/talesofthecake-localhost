@@ -243,6 +243,42 @@ function Navbar() {
         </div>
       </div>
 
+      {/* ✅ Favorites Drawer */}
+<div
+  className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
+    favOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+>
+  <div className="flex justify-between items-center px-4 py-3 border-b">
+    <h2 className="text-lg font-bold">Your Favorites</h2>
+    <button onClick={() => setFavOpen(false)} className="text-xl">
+      ✖
+    </button>
+  </div>
+  <div className="p-4 overflow-y-auto h-[calc(100%-60px)]">
+    {favorites.length === 0 ? (
+      <p className="text-gray-500">No favorites yet 💔</p>
+    ) : (
+      <ul className="space-y-4">
+        {favorites.map((item) => (
+          <li key={item.id} className="flex items-center justify-between">
+            <div>
+              <p className="font-semibold">{item.name}</p>
+              <p className="text-sm text-gray-600">{item.price}</p>
+            </div>
+            <button
+              onClick={() => toggleFavorite(item)}
+              className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+            >
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
+
       {/* ✅ Search Overlay */}
 {searchOpen && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50">
