@@ -92,10 +92,13 @@ function Navbar() {
 
         {/* Mobile right-side icons (user, cart, search) */}
         <div className="flex items-center gap-4 md:hidden">
-          {/* User/Login */}
-          <Link to="/login" className="text-xl cursor-pointer hover:text-secondary">
-            🧑
-          </Link>
+          {/* Search */}
+          <span
+            className="text-xl cursor-pointer hover:text-secondary"
+            onClick={() => setSearchOpen(true)}
+          >
+            🔍
+          </span>
 
           {/* Cart */}
           <div className="relative cursor-pointer" onClick={() => setCartOpen(true)}>
@@ -107,13 +110,10 @@ function Navbar() {
             )}
           </div>
 
-          {/* Search */}
-          <span
-            className="text-xl cursor-pointer hover:text-secondary"
-            onClick={() => setSearchOpen(true)}
-          >
-            🔍
-          </span>
+        /* User/Login */}
+          <Link to="/login" className="text-xl cursor-pointer hover:text-secondary">
+            🧑
+          </Link>
         </div>
       </div>
 
