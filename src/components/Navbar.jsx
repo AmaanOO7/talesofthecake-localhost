@@ -244,26 +244,26 @@ function Navbar() {
       </div>
 
       {/* ✅ Search Overlay */}
-      {searchOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50">
-          <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-4 relative">
-            <button
-              onClick={() => setSearchOpen(false)}
-              className="absolute top-2 right-2 text-xl"
-            >
-              ✖
-            </button>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onKeyDown={handleSearchSubmit}
-              className="w-full border border-gray-300 rounded p-2"
-            />
-          </div>
-        </div>
-      )}
+{searchOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50">
+    <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-4 relative">
+      <button
+        onClick={() => setSearchOpen(false)}
+        className="absolute top-2 right-2 text-xl"
+      >
+        ✖
+      </button>
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+        onKeyDown={handleSearchSubmit}
+        className="w-full border border-gray-300 rounded p-2 text-black placeholder-gray-400 focus:outline-none"
+      />
+      </div>
+    </div>
+    )}
     </nav>
   );
 }
