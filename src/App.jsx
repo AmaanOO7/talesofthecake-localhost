@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AllProducts from "./components/AllProducts";
@@ -11,16 +11,15 @@ import Contact from "./components/Contact";
 import Auth from "./components/Auth";
 import Footer from "./components/Footer";
 import Favorites from "./components/Favorites";
+import AdminPanel from "./components/AdminPanel"; // ✅ Import Admin Panel
 import { ShopProvider } from "./components/ShopContext";
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState("");
-
   return (
     <ShopProvider>
       <Router>
-        {/* Navbar should always be inside return */}
-        <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        {/* Navbar always visible */}
+        <Navbar />
 
         <div className="pt-20">
           <Routes>
@@ -39,16 +38,16 @@ function App() {
             />
 
             {/* All Products Page */}
-            <Route
-              path="/products"
-              element={<AllProducts searchTerm={searchTerm} />}
-            />
+            <Route path="/products" element={<AllProducts />} />
 
             {/* Login/Auth */}
             <Route path="/login" element={<Auth />} />
 
             {/* Favorites Page */}
             <Route path="/favorites" element={<Favorites />} />
+
+            {/* ✅ Admin Panel Route */}
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </div>
       </Router>
