@@ -234,34 +234,61 @@ function Navbar() {
             )}
           </div>
 
-          {/* ✅ Bill Summary */}
-          {cart.length > 0 && (() => {
-            const subtotal = cart.reduce((sum, item) => {
-              const productDiscount = item.discount || 0;
-              const discountFactor = 1 - productDiscount / 100;
-              return sum + item.price * item.quantity * discountFactor;
-            }, 0);
+         {/* ✅ Bill Summary (Invoice Style) */}
+{cart.length > 0 && (() => {
+  // Calculate values
+  const baseTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discountTotal = cart.reduce((sum, item) => {
+    const discountAmount = (item.price * item.quantity * (item.discount || 0)) / 100;
+    return sum + discountAmount;
+  }, 0);
 
-            const packagingCharge = subtotal > 0 ? 50 : 0;
-            const deliveryCharge = subtotal > 0 ? 100 : 0;
-            const gst = subtotal * 0.05;
-            const grandTotal = subtotal + packagingCharge + deliveryCharge + gst;
+  const subtotal = baseTotal - discountTotal;
+  const packagingCharge = subtotal > 0 ? 50 : 0;
+  const deliveryCharge = subtotal > 0 ? 100 : 0;
+  const gst = subtotal * 0.05;
+  const grandTotal = subtotal + packagingCharge + deliveryCharge + gst;
 
-            return (
-              <div className="p-4 border-t bg-gray-50">
-                <div className="flex justify-between"><span>Subtotal:</span><span>₹{subtotal.toFixed(2)}</span></div>
-                <div className="flex justify-between"><span>Packaging:</span><span>₹{packagingCharge}</span></div>
-                <div className="flex justify-between"><span>Delivery:</span><span>₹{deliveryCharge}</span></div>
-                <div className="flex justify-between"><span>GST (5%):</span><span>₹{gst.toFixed(2)}</span></div>
-                <div className="flex justify-between font-bold text-lg mt-2 pt-2 border-t">
-                  <span>Total:</span><span>₹{grandTotal.toFixed(2)}</span>
-                </div>
-                <button className="w-full mt-4 bg-green-600 text-white py-2 rounded">
-                  Proceed to Checkout
-                </button>
-              </div>
-            );
-          })()}
+  return (
+    <div className="p-4 border-t bg-gray-50 text-sm">
+      <h3 className="text-lg font-semibold mb-2">Bill Summary</h3>
+
+      <div className="flex justify-between py-1">
+        <span>Base Price:</span>
+        <span>₹{baseTotal.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between py-1 text-green-600">
+        <span>Discount:</span>
+        <span>-₹{discountTotal.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between py-1">
+        <span>Subtotal:</span>
+        <span>₹{subtotal.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between py-1">
+        <span>Packaging:</span>
+        <span>₹{packagingCharge}</span>
+      </div>
+      <div className="flex justify-between py-1">
+        <span>Delivery:</span>
+        <span>₹{deliveryCharge}</span>
+      </div>
+      <div className="flex justify-between py-1">
+        <span>GST (5%):</span>
+        <span>₹{gst.toFixed(2)}</span>
+      </div>
+
+      <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
+        <span>Total:</span>
+        <span>₹{grandTotal.toFixed(2)}</span>
+      </div>
+
+      <button className="w-full mt-4 bg-green-600 text-white py-2 rounded hover:bg-green-700">
+        Proceed to Checkout
+      </button>
+    </div>
+        );
+      })()}
         </div>
       )}
 
