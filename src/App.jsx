@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import Favorites from "./components/Favorites";
 import AdminPanel from "./components/AdminPanel"; // ✅ Import Admin Panel
 import AdminSession from "./components/AdminSession"; // ✅ new wrapper
+import { ToastProvider } from "./components/ToastContext";
 import { ShopProvider } from "./components/ShopContext";
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
   
   return (
     <ShopProvider>
-      <Router>
+      <ToastProvider>
+        <Router>
         {/* Navbar always visible */}
         <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
@@ -56,6 +58,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      </ToastProvider>
     </ShopProvider>
   );
 }
