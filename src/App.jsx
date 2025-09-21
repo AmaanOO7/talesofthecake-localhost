@@ -12,6 +12,7 @@ import Auth from "./components/Auth";
 import Footer from "./components/Footer";
 import Favorites from "./components/Favorites";
 import AdminPanel from "./components/AdminPanel"; // ✅ Import Admin Panel
+import AdminSession from "./components/AdminSession"; // ✅ new wrapper
 import { ShopProvider } from "./components/ShopContext";
 
 function App() {
@@ -51,7 +52,7 @@ function App() {
             <Route path="/favorites" element={<Favorites />} />
 
             {/* ✅ Admin Panel Route */}
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin" element={<AdminSession><AdminPanel /></AdminSession>} />
           </Routes>
         </div>
       </Router>
