@@ -8,16 +8,23 @@ export function ShopProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // ✅ global search state
 
-  // ✅ Add products with discount field (default 0%)
+  // ✅ Normalize products with discount as number (default 0)
   const [products, setProducts] = useState(
-    ALL_PRODUCTS.map((p) => ({ ...p, discount: p.discount || 0 }))
+    ALL_PRODUCTS.map((p) => ({
+      ...p,
+      discount: typeof p.discount === "number" ? p.discount : 0,
+    }))
   );
 
-  // ✅ Admin function to update discount
+  // ✅ Admin function to update discount (safe number)
   const updateDiscount = (productId, discount) => {
+    let parsed = parseFloat(discount);
+    if (isNaN(parsed) || parsed < 0) parsed = 0;
+    if (parsed > 100) parsed = 100;
+
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === productId ? { ...p, discount: Number(discount) } : p
+        p.id === productId ? { ...p, discount: parsed } : p
       )
     );
   };
