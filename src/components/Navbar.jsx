@@ -2,14 +2,14 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { ShopContext } from "./ShopContext";
 import { Link, useNavigate } from "react-router-dom";
 
-// ✅ Heroicons
+// ✅ Import Heroicons safely
 import {
-  ShoppingCartIcon,
   HeartIcon,
-  Bars3Icon,
-  XMarkIcon,
+  ShoppingCartIcon,
   MagnifyingGlassIcon,
   UserIcon,
+  XMarkIcon,
+  Bars3Icon,
 } from "@heroicons/react/24/outline";
 
 function Navbar() {
@@ -38,7 +38,7 @@ function Navbar() {
 
   const navigate = useNavigate();
 
-  // ✅ Show drawer with fade before closing
+  // ✅ Drawer logic
   const openCart = () => {
     setCartVisible(true);
     setTimeout(() => setCartOpen(true), 10);
@@ -66,21 +66,13 @@ function Navbar() {
     setTimeout(() => setSearchVisible(false), 300);
   };
 
-  // ✅ Close all drawers if clicked outside or ESC pressed
+  // ✅ Close drawers when clicking outside or ESC
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-      if (cartRef.current && !cartRef.current.contains(e.target)) {
-        closeCart();
-      }
-      if (favoritesRef.current && !favoritesRef.current.contains(e.target)) {
-        closeFavorites();
-      }
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        closeSearch();
-      }
+      if (menuRef.current && !menuRef.current.contains(e.target)) setOpen(false);
+      if (cartRef.current && !cartRef.current.contains(e.target)) closeCart();
+      if (favoritesRef.current && !favoritesRef.current.contains(e.target)) closeFavorites();
+      if (searchRef.current && !searchRef.current.contains(e.target)) closeSearch();
     };
 
     const handleEsc = (e) => {
@@ -101,33 +93,31 @@ function Navbar() {
     };
   }, []);
 
-  // ✅ Handle Search
+  // ✅ Handle search
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
   const handleSearchSubmit = (e) => {
     if (e.key === "Enter") {
-      navigate("/products"); // redirect to products page
-      closeSearch(); // close overlay
+      navigate("/products");
+      closeSearch();
     }
   };
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* ✅ Hamburger (mobile only) */}
+        {/* Hamburger */}
         <div className="md:hidden">
-          <button onClick={() => setOpen(!open)} className="relative w-8 h-8">
-            {open ? (
-              <XMarkIcon className="h-8 w-8 text-white" />
-            ) : (
-              <Bars3Icon className="h-8 w-8 text-white" />
-            )}
+          <button
+            onClick={() => setOpen(!open)}
+            className="w-8 h-8 flex items-center justify-center"
+          >
+            <Bars3Icon className="h-6 w-6 text-white" />
           </button>
         </div>
 
-        {/* Brand Logo */}
+        {/* Brand */}
         <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
           <Link to="/" className="flex items-center">
             <img
@@ -143,79 +133,192 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6">
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <Link to="/products">Products</Link>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <a href="#about">About</a>
-          </li>
-          <li className="cursor-pointer hover:text-secondary">
-            <a href="#contact">Contact</a>
-          </li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/products">Products</Link></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
 
-          {/* ❤️ Favorites */}
+          {/* Favorites */}
           <li className="relative cursor-pointer" onClick={openFavorites}>
-            <HeartIcon className="h-6 w-6 text-pink-600 hover:text-pink-800" />
+            <HeartIcon className="h-6 w-6 text-white hover:text-secondary" />
             {favorites.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+              <span className="absolute -top-2 -right-3 bg-pink-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
                 {favorites.length}
               </span>
             )}
           </li>
 
-          {/* 🛒 Cart */}
+          {/* Cart */}
           <li className="relative cursor-pointer" onClick={openCart}>
-            <ShoppingCartIcon className="h-6 w-6 text-green-600 hover:text-green-800" />
+            <ShoppingCartIcon className="h-6 w-6 text-white hover:text-secondary" />
             {cart.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+              <span className="absolute -top-2 -right-3 bg-green-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">
                 {cart.reduce((sum, item) => sum + item.quantity, 0)}
               </span>
             )}
           </li>
 
-          {/* 🔍 Search */}
-          <li className="cursor-pointer hover:text-secondary" onClick={openSearch}>
-            <MagnifyingGlassIcon className="h-6 w-6 text-white hover:text-gray-300" />
+          {/* Search */}
+          <li onClick={openSearch}>
+            <MagnifyingGlassIcon className="h-6 w-6 text-white hover:text-secondary cursor-pointer" />
           </li>
 
-          {/* 👤 Login */}
-          <li className="cursor-pointer hover:text-secondary">
+          {/* Login */}
+          <li>
             <Link to="/login">
-              <UserIcon className="h-6 w-6 text-white hover:text-gray-300" />
+              <UserIcon className="h-6 w-6 text-white hover:text-secondary" />
             </Link>
           </li>
         </ul>
 
-        {/* ✅ Mobile right-side icons */}
+        {/* Mobile right icons */}
         <div className="flex items-center gap-4 md:hidden">
-          <MagnifyingGlassIcon
-            onClick={openSearch}
-            className="h-6 w-6 text-white hover:text-gray-300 cursor-pointer"
-          />
-          <div className="relative cursor-pointer" onClick={openFavorites}>
-            <HeartIcon className="h-6 w-6 text-pink-600 hover:text-pink-800" />
-            {favorites.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {favorites.length}
-              </span>
-            )}
-          </div>
-          <div className="relative cursor-pointer" onClick={openCart}>
-            <ShoppingCartIcon className="h-6 w-6 text-green-600 hover:text-green-800" />
-            {cart.length > 0 && (
-              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
-                {cart.reduce((sum, item) => sum + item.quantity, 0)}
-              </span>
-            )}
-          </div>
+          <MagnifyingGlassIcon className="h-6 w-6 cursor-pointer" onClick={openSearch} />
+          <HeartIcon className="h-6 w-6 cursor-pointer" onClick={openFavorites} />
+          <ShoppingCartIcon className="h-6 w-6 cursor-pointer" onClick={openCart} />
           <Link to="/login">
-            <UserIcon className="h-6 w-6 text-white hover:text-gray-300" />
+            <UserIcon className="h-6 w-6 cursor-pointer" />
           </Link>
         </div>
       </div>
+
+      {/* ✅ Cart Drawer */}
+      {cartVisible && (
+        <div
+          ref={cartRef}
+          className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transition-transform ${
+            cartOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex justify-between items-center px-4 py-3 border-b">
+            <h2 className="text-lg font-bold">Your Cart</h2>
+            <XMarkIcon className="h-6 w-6 cursor-pointer" onClick={closeCart} />
+          </div>
+          <div className="p-4 overflow-y-auto h-[calc(100%-220px)]">
+            {cart.length === 0 ? (
+              <p className="text-gray-500">Your cart is empty</p>
+            ) : (
+              <ul className="space-y-4">
+                {cart.map((item) => {
+                  const productDiscount = item.discount || 0; // e.g. 20
+                  const discountFactor = 1 - productDiscount / 100;
+                  const originalPrice = item.price * item.quantity;
+                  const discountedPrice = originalPrice * discountFactor;
+
+                  return (
+                    <li key={item.id} className="flex justify-between">
+                      <div>
+                        <p>{item.name}</p>
+                        <p className="text-sm">Qty: {item.quantity}</p>
+                        {productDiscount > 0 ? (
+                          <>
+                            <p className="line-through text-gray-400">₹{originalPrice}</p>
+                            <p className="text-green-600 font-semibold">
+                              ₹{discountedPrice.toFixed(2)} ({productDiscount}% OFF)
+                            </p>
+                          </>
+                        ) : (
+                          <p>₹{originalPrice.toFixed(2)}</p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="bg-red-500 text-white px-2 py-1 rounded"
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+
+          {/* ✅ Bill Summary */}
+          {cart.length > 0 && (() => {
+            const subtotal = cart.reduce((sum, item) => {
+              const productDiscount = item.discount || 0;
+              const discountFactor = 1 - productDiscount / 100;
+              return sum + item.price * item.quantity * discountFactor;
+            }, 0);
+
+            const packagingCharge = subtotal > 0 ? 50 : 0;
+            const deliveryCharge = subtotal > 0 ? 100 : 0;
+            const gst = subtotal * 0.05;
+            const grandTotal = subtotal + packagingCharge + deliveryCharge + gst;
+
+            return (
+              <div className="p-4 border-t bg-gray-50">
+                <div className="flex justify-between"><span>Subtotal:</span><span>₹{subtotal.toFixed(2)}</span></div>
+                <div className="flex justify-between"><span>Packaging:</span><span>₹{packagingCharge}</span></div>
+                <div className="flex justify-between"><span>Delivery:</span><span>₹{deliveryCharge}</span></div>
+                <div className="flex justify-between"><span>GST (5%):</span><span>₹{gst.toFixed(2)}</span></div>
+                <div className="flex justify-between font-bold text-lg mt-2 pt-2 border-t">
+                  <span>Total:</span><span>₹{grandTotal.toFixed(2)}</span>
+                </div>
+                <button className="w-full mt-4 bg-green-600 text-white py-2 rounded">
+                  Proceed to Checkout
+                </button>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+      {/* ✅ Favorites Drawer */}
+      {favoritesVisible && (
+        <div
+          ref={favoritesRef}
+          className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transition-transform ${
+            favoritesOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex justify-between items-center px-4 py-3 border-b">
+            <h2>Your Favorites</h2>
+            <XMarkIcon className="h-6 w-6 cursor-pointer" onClick={closeFavorites} />
+          </div>
+          <div className="p-4 overflow-y-auto">
+            {favorites.length === 0 ? (
+              <p className="text-gray-500">No favorites yet 💔</p>
+            ) : (
+              <ul className="space-y-4">
+                {favorites.map((item) => (
+                  <li key={item.id} className="flex justify-between">
+                    <p>{item.name} - ₹{item.price}</p>
+                    <button
+                      onClick={() => toggleFavorite(item)}
+                      className="bg-red-500 text-white px-2 py-1 rounded"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ✅ Search Overlay */}
+      {searchVisible && (
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center pt-20 transition-opacity ${
+            searchOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div ref={searchRef} className="bg-white w-full max-w-lg rounded p-4 relative">
+            <XMarkIcon className="h-6 w-6 absolute top-2 right-2 cursor-pointer" onClick={closeSearch} />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onKeyDown={handleSearchSubmit}
+              className="w-full border rounded p-2"
+            />
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
