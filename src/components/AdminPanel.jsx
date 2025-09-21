@@ -20,8 +20,14 @@ const AdminPanel = () => {
   };
 
   const handleDiscountChange = (id, value) => {
-    updateDiscount(id, value);
-    showToast("🎉 Discount updated!", "info"); // ✅ Show toast when discount changes
+    let discount = parseFloat(value);
+
+    // ✅ Validate discount
+    if (isNaN(discount) || discount < 0) discount = 0;
+    if (discount > 100) discount = 100;
+
+    updateDiscount(id, discount);
+    showToast(`🎉 Discount set to ${discount}%`, "info"); // ✅ Show toast when discount changes
   };
 
   return (
@@ -48,7 +54,7 @@ const AdminPanel = () => {
           {products.map((p) => (
             <tr key={p.id} className="text-center">
               <td className="p-2 border">{p.name}</td>
-              <td className="p-2 border">{p.price}</td>
+              <td className="p-2 border">₹{p.price}</td>
               <td className="p-2 border">
                 <input
                   type="number"
