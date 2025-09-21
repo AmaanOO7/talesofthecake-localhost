@@ -5,19 +5,19 @@ const ALL_PRODUCTS = [
   {
     id: 1,
     name: "Vanilla jar cake",
-    price: "₹1200",
+    price: "1200",
     img: "https://raw.githubusercontent.com/AmaanOO7/Talesofthecake-images/7f7d16b370ed6c65b2acc26904c0de45ff3e01d0/Zomato%20pics/Vanilla%20jar%20cake.jpg",
   },
   {
     id: 2,
     name: "Vanilla Cup Cake",
-    price: "₹1500",
+    price: "1500",
     img: "https://raw.githubusercontent.com/AmaanOO7/Talesofthecake-images/7f7d16b370ed6c65b2acc26904c0de45ff3e01d0/Zomato%20pics/Vanilla%20Cup%20Cake.jpg",
   },
   {
     id: 3,
     name: "Vanilla cake",
-    price: "₹1300",
+    price: "1300",
     img: "https://raw.githubusercontent.com/AmaanOO7/Talesofthecake-images/7f7d16b370ed6c65b2acc26904c0de45ff3e01d0/Zomato%20pics/Vanilla%20cake.jpg",
   },
   {
