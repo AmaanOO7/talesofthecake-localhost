@@ -1,5 +1,5 @@
-import React, { createContext, useState } from "react";
-import ALL_PRODUCTS from "./productsData"; // ✅ import here
+import React, { createContext, useState, useContext } from "react";
+import ALL_PRODUCTS from "./productsData"; // ✅ import products data
 
 export const ShopContext = createContext();
 
@@ -8,7 +8,21 @@ export function ShopProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // ✅ global search state
 
-  // Cart functions with quantity support
+  // ✅ Add products with discount field (default 0%)
+  const [products, setProducts] = useState(
+    ALL_PRODUCTS.map((p) => ({ ...p, discount: p.discount || 0 }))
+  );
+
+  // ✅ Admin function to update discount
+  const updateDiscount = (productId, discount) => {
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === productId ? { ...p, discount: Number(discount) } : p
+      )
+    );
+  };
+
+  // ✅ Cart functions with quantity support
   const addToCart = (product) => {
     const existing = cart.find((item) => item.id === product.id);
     if (existing) {
@@ -36,7 +50,7 @@ export function ShopProvider({ children }) {
     );
   };
 
-  // Favorites functions
+  // ✅ Favorites
   const addToFavorites = (product) => {
     if (!favorites.find((item) => item.id === product.id)) {
       setFavorites([...favorites, product]);
@@ -55,8 +69,8 @@ export function ShopProvider({ children }) {
     }
   };
 
-  // ✅ Products filtered globally by searchQuery
-  const filteredProducts = ALL_PRODUCTS.filter((p) =>
+  // ✅ Products filtered by searchQuery
+  const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -72,10 +86,15 @@ export function ShopProvider({ children }) {
         toggleFavorite,
         searchQuery,
         setSearchQuery,
-        filteredProducts, // ✅ share filtered list
+        filteredProducts, // ✅ filtered list
+        products, // ✅ full products with discounts
+        updateDiscount, // ✅ admin can update discounts
       }}
     >
       {children}
     </ShopContext.Provider>
   );
 }
+
+// ✅ custom hook for easy access
+export const useShop = () => useContext(ShopContext);
