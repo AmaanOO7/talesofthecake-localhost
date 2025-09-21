@@ -16,13 +16,11 @@ import { ShopProvider } from "./components/ShopContext";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
-<Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
-<Route path="/products" element={<AllProducts searchTerm={searchTerm} />} />
   return (
     <ShopProvider>
       <Router>
-        <Navbar onSearch={setSearchTerm} />
+        {/* Navbar should always be inside return */}
+        <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
         <div className="pt-20">
           <Routes>
