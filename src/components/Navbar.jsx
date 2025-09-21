@@ -99,7 +99,7 @@ function Navbar() {
     }
   };
 
-  // ✅ Format price (safe for calculations + display)
+  // ✅ Format price
   const formatPrice = (value) => {
     if (!value) return "₹0";
     return "₹" + Number(value).toLocaleString("en-IN");
@@ -114,7 +114,11 @@ function Navbar() {
             onClick={() => setOpen(!open)}
             className="w-8 h-8 flex items-center justify-center"
           >
-            <Bars3Icon className="h-6 w-6 text-white" />
+            {open ? (
+              <XMarkIcon className="h-6 w-6 text-white" />
+            ) : (
+              <Bars3Icon className="h-6 w-6 text-white" />
+            )}
           </button>
         </div>
 
@@ -134,18 +138,10 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/products">Products</Link>
-          </li>
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/products">Products</Link></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
 
           {/* Favorites */}
           <li className="relative cursor-pointer" onClick={openFavorites}>
@@ -189,6 +185,42 @@ function Navbar() {
             <UserIcon className="h-6 w-6 cursor-pointer" />
           </Link>
         </div>
+      </div>
+
+      {/* ✅ Mobile Menu */}
+      <div
+        ref={menuRef}
+        className={`md:hidden bg-primary text-white px-6 overflow-hidden absolute left-0 w-full shadow-lg z-40 transition-all duration-500 ease-in-out transform ${
+          open ? "max-h-96 py-4 opacity-100 scale-100" : "max-h-0 py-0 opacity-0 scale-95"
+        }`}
+      >
+        <ul className="flex flex-col gap-4">
+          {[
+            { to: "/", label: "Home" },
+            { to: "/products", label: "Products" },
+            { to: "#about", label: "About" },
+            { to: "#contact", label: "Contact" },
+            { to: "/login", label: "Login" },
+          ].map((item, index) => (
+            <li
+              key={item.label}
+              className={`transform transition-all duration-700 ${
+                open
+                  ? "translate-y-0 opacity-100 scale-100 ease-out"
+                  : "translate-y-4 opacity-0 scale-95 ease-in"
+              }`}
+              style={{ transitionDelay: `${index * 120}ms` }}
+            >
+              <Link
+                to={item.to}
+                onClick={() => setOpen(false)}
+                className="block hover:text-secondary transition-transform duration-500 ease-out hover:scale-105"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* ✅ Cart Drawer */}
