@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { ShopContext } from "./ShopContext";
 import { Link } from "react-router-dom";
 
@@ -8,6 +8,23 @@ function Navbar() {
   const [favoritesOpen, setFavoritesOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { cart, favorites, removeFromCart } = useContext(ShopContext);
+
+  const menuRef = useRef(null);
+
+  // ✅ Close drawer if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
@@ -135,6 +152,7 @@ function Navbar() {
 
       {/* ✅ Mobile Drawer */}
       <div
+        ref={menuRef}
         className={`fixed top-0 left-0 h-full w-64 bg-primary shadow-lg transform transition-transform duration-500 ease-in-out md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -204,6 +222,25 @@ function Navbar() {
           )}
         </div>
       </div>
+
+      {/* ✅ Search Overlay */}
+      {searchOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50">
+          <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-4 relative">
+            <button
+              onClick={() => setSearchOpen(false)}
+              className="absolute top-2 right-2 text-xl"
+            >
+              ✖
+            </button>
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full border border-gray-300 rounded p-2"
+            />
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
