@@ -1,136 +1,209 @@
 import React, { useState, useContext } from "react";
-import { ShoppingCart, Heart, Search, User, Menu, X } from "lucide-react";
 import { ShopContext } from "./ShopContext";
+import { Link } from "react-router-dom";
 
 function Navbar() {
-  const { cart, searchQuery, setSearchQuery } = useContext(ShopContext);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false); // ✅ Search overlay
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { cart, favorites, removeFromCart } = useContext(ShopContext);
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <h1 className="text-2xl font-bold text-pink-600">Tales of the Cake</h1>
+    <nav className="fixed top-0 left-0 w-full bg-primary text-white shadow z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* ✅ Hamburger (mobile only) */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setOpen(!open)}
+            className="relative w-8 h-8 flex flex-col justify-between items-center"
+          >
+            <span
+              className={`h-0.5 w-6 bg-white rounded transition-transform duration-300 ${
+                open ? "rotate-45 translate-y-2" : ""
+              }`}
+            ></span>
+            <span
+              className={`h-0.5 w-6 bg-white rounded transition-all duration-300 ${
+                open ? "opacity-0" : "opacity-100"
+              }`}
+            ></span>
+            <span
+              className={`h-0.5 w-6 bg-white rounded transition-transform duration-300 ${
+                open ? "-rotate-45 -translate-y-2" : ""
+              }`}
+            ></span>
+          </button>
+        </div>
+
+        {/* Brand Logo */}
+        <div className="flex-1 flex items-center justify-center md:justify-start space-x-3">
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo.jpg"
+              alt="Tales of the Cake Logo"
+              className="h-16 md:h-20 w-auto object-contain"
+            />
+            <span className="ml-2 text-2xl md:text-3xl font-cursive text-white hidden sm:inline-block">
+              Tales of the Cake
+            </span>
+          </Link>
+        </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 items-center">
-          <a href="/" className="hover:text-pink-500">Home</a>
-          <a href="/products" className="hover:text-pink-500">Products</a>
-          <a href="/about" className="hover:text-pink-500">About</a>
-          <a href="/contact" className="hover:text-pink-500">Contact</a>
+        <ul className="hidden md:flex items-center gap-6">
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/products">Products</Link>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <a href="#about">About</a>
+          </li>
+          <li className="cursor-pointer hover:text-secondary">
+            <a href="#contact">Contact</a>
+          </li>
 
-          {/* Icons */}
-          <div className="flex space-x-4 items-center">
-            {/* Search */}
-            <Search
-              className="w-6 h-6 cursor-pointer hover:text-pink-600"
-              onClick={() => setSearchOpen(true)}
-            />
+          {/* ❤️ Favorites */}
+          <li
+            className="relative cursor-pointer"
+            onClick={() => setFavoritesOpen(true)}
+          >
+            ❤️
+            {favorites.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                {favorites.length}
+              </span>
+            )}
+          </li>
 
-            {/* Favorites */}
-            <Heart className="w-6 h-6 cursor-pointer hover:text-pink-600" />
+          {/* 🛒 Cart */}
+          <li
+            className="relative cursor-pointer"
+            onClick={() => setCartOpen(true)}
+          >
+            🛒
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            )}
+          </li>
 
-            {/* Cart */}
-            <div className="relative">
-              <ShoppingCart
-                className="w-6 h-6 cursor-pointer hover:text-pink-600"
-                onClick={() => setCartOpen(true)}
-              />
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">
-                  {cart.length}
-                </span>
-              )}
-            </div>
+          {/* 🔍 Search */}
+          <li
+            className="cursor-pointer hover:text-secondary"
+            onClick={() => setSearchOpen(true)}
+          >
+            🔍
+          </li>
 
-            {/* Login/User */}
-            <User className="w-6 h-6 cursor-pointer hover:text-pink-600" />
-          </div>
-        </div>
+          {/* 👤 Login */}
+          <li className="cursor-pointer hover:text-secondary">
+            <Link to="/login">👤</Link>
+          </li>
+        </ul>
 
-        {/* Mobile Hamburger */}
-        <button
-          className="md:hidden focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white shadow-md px-6 py-4 space-y-4">
-          <a href="/" className="block hover:text-pink-500">Home</a>
-          <a href="/products" className="block hover:text-pink-500">Products</a>
-          <a href="/about" className="block hover:text-pink-500">About</a>
-          <a href="/contact" className="block hover:text-pink-500">Contact</a>
-
-          {/* Mobile Icons */}
-          <div className="flex space-x-4 pt-4">
-            <Search
-              className="w-6 h-6 cursor-pointer hover:text-pink-600"
-              onClick={() => setSearchOpen(true)}
-            />
-            <Heart className="w-6 h-6 cursor-pointer hover:text-pink-600" />
-            <ShoppingCart
-              className="w-6 h-6 cursor-pointer hover:text-pink-600"
-              onClick={() => setCartOpen(true)}
-            />
-            <User className="w-6 h-6 cursor-pointer hover:text-pink-600" />
-          </div>
-        </div>
-      )}
-
-      {/* ✅ Cart Side Panel */}
-      {cartOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-end z-50">
-          <div className="bg-white w-80 h-full shadow-lg p-6 relative">
-            <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-black"
-              onClick={() => setCartOpen(false)}
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <h2 className="text-xl font-bold mb-4">Your Cart</h2>
-
-            {cart.length === 0 ? (
-              <p className="text-gray-500">Your cart is empty.</p>
-            ) : (
-              <ul className="space-y-3">
-                {cart.map((item, idx) => (
-                  <li key={idx} className="flex justify-between items-center border-b pb-2">
-                    <span>{item.name}</span>
-                    <span className="font-semibold">{item.price}</span>
-                  </li>
-                ))}
-              </ul>
+        {/* Mobile right-side icons */}
+        <div className="flex items-center gap-4 md:hidden">
+          <span
+            className="text-xl cursor-pointer hover:text-secondary"
+            onClick={() => setSearchOpen(true)}
+          >
+            🔍
+          </span>
+          <div
+            className="relative cursor-pointer"
+            onClick={() => setCartOpen(true)}
+          >
+            <span className="text-xl hover:text-secondary">🛒</span>
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
             )}
           </div>
+          <Link
+            to="/login"
+            className="text-xl cursor-pointer hover:text-secondary"
+          >
+            👤
+          </Link>
         </div>
-      )}
+      </div>
 
-      {/* ✅ Search Overlay */}
-      {searchOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center pt-20 z-50">
-          <div className="bg-white w-full max-w-2xl mx-4 p-4 rounded shadow-lg relative">
-            <button
-              className="absolute top-3 right-3 text-gray-600 hover:text-black"
-              onClick={() => setSearchOpen(false)}
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <input
-              type="text"
-              placeholder="Search for cakes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
-          </div>
+      {/* ✅ Mobile Drawer */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-primary shadow-lg transform transition-transform duration-500 ease-in-out md:hidden ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <ul className="flex flex-col gap-6 px-6 py-8 overflow-y-auto h-full">
+          <li
+            className="cursor-pointer hover:text-secondary"
+            onClick={() => setOpen(false)}
+          >
+            <Link to="/">Home</Link>
+          </li>
+          <li
+            className="cursor-pointer hover:text-secondary"
+            onClick={() => setOpen(false)}
+          >
+            <Link to="/products">Products</Link>
+          </li>
+          <li
+            className="cursor-pointer hover:text-secondary"
+            onClick={() => setOpen(false)}
+          >
+            <a href="#about">About</a>
+          </li>
+          <li
+            className="cursor-pointer hover:text-secondary"
+            onClick={() => setOpen(false)}
+          >
+            <a href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+
+      {/* ✅ Cart Drawer */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 bg-white text-black shadow-lg transform transition-transform duration-500 ease-in-out ${
+          cartOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex justify-between items-center px-4 py-3 border-b">
+          <h2 className="text-lg font-bold">Your Cart</h2>
+          <button onClick={() => setCartOpen(false)} className="text-xl">
+            ✖
+          </button>
         </div>
-      )}
+        <div className="p-4 overflow-y-auto h-[calc(100%-60px)]">
+          {cart.length === 0 ? (
+            <p className="text-gray-500">Your cart is empty</p>
+          ) : (
+            <ul className="space-y-4">
+              {cart.map((item) => (
+                <li key={item.id} className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold">{item.name}</p>
+                    <p className="text-sm text-gray-600">
+                      Qty: {item.quantity}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }
