@@ -253,7 +253,7 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* ✅ Cart Drawer */}
+      {/* ✅ Cart Drawer with Discounts */}
       {cartVisible && (
         <div
           ref={cartRef}
@@ -265,28 +265,89 @@ function Navbar() {
             <h2 className="text-lg font-bold">Your Cart</h2>
             <button onClick={closeCart} className="text-xl">✖</button>
           </div>
-          <div className="p-4 overflow-y-auto h-[calc(100%-60px)]">
+          <div className="p-4 overflow-y-auto h-[calc(100%-220px)]">
             {cart.length === 0 ? (
               <p className="text-gray-500">Your cart is empty</p>
             ) : (
               <ul className="space-y-4">
-                {cart.map((item) => (
-                  <li key={item.id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold">{item.name}</p>
-                      <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
-                    </div>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                    >
-                      Remove
-                    </button>
-                  </li>
-                ))}
+                {cart.map((item) => {
+                  const productDiscount = item.discount || 0;
+                  const originalPrice = item.price * item.quantity;
+                  const discountedPrice = originalPrice * (1 - productDiscount);
+
+                  return (
+                    <li key={item.id} className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold">{item.name}</p>
+                        <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                        {productDiscount > 0 ? (
+                          <>
+                            <p className="text-sm text-gray-400 line-through">
+                              ₹{originalPrice}
+                            </p>
+                            <p className="text-sm text-green-600 font-semibold">
+                              ₹{discountedPrice.toFixed(2)} ({productDiscount * 100}% OFF)
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-sm text-gray-600">
+                            ₹{originalPrice.toFixed(2)}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
+
+          {/* ✅ Bill Summary */}
+          {cart.length > 0 && (() => {
+            const subtotal = cart.reduce((sum, item) => {
+              const productDiscount = item.discount || 0;
+              return sum + item.price * item.quantity * (1 - productDiscount);
+            }, 0);
+
+            const packagingCharge = subtotal > 0 ? 50 : 0;
+            const deliveryCharge = subtotal > 0 ? 100 : 0;
+            const gst = subtotal * 0.05;
+            const grandTotal = subtotal + packagingCharge + deliveryCharge + gst;
+
+            return (
+              <div className="p-4 border-t bg-gray-50">
+                <div className="flex justify-between">
+                  <span>Subtotal:</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Packaging:</span>
+                  <span>₹{packagingCharge}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Delivery:</span>
+                  <span>₹{deliveryCharge}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>GST (5%):</span>
+                  <span>₹{gst.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between font-bold text-lg border-t pt-2 mt-2">
+                  <span>Total:</span>
+                  <span>₹{grandTotal.toFixed(2)}</span>
+                </div>
+                <button className="w-full mt-4 bg-green-600 text-white py-2 rounded hover:bg-green-700">
+                  Proceed to Checkout
+                </button>
+              </div>
+            );
+          })()}
         </div>
       )}
 
