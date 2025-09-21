@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { ShopContext } from "./ShopContext";
 import { Link } from "react-router-dom";
-import { FaUser, FaShoppingCart, FaSearch } from "react-icons/fa"; // icons
 
 function Navbar() {
   const [open, setOpen] = useState(false); // mobile menu
@@ -94,13 +93,13 @@ function Navbar() {
         {/* Mobile right-side icons (user, cart, search) */}
         <div className="flex items-center gap-4 md:hidden">
           {/* User/Login */}
-          <Link to="/login">
-            <FaUser className="text-xl cursor-pointer hover:text-secondary" />
+          <Link to="/login" className="text-xl cursor-pointer hover:text-secondary">
+            🧑
           </Link>
 
           {/* Cart */}
           <div className="relative cursor-pointer" onClick={() => setCartOpen(true)}>
-            <FaShoppingCart className="text-xl hover:text-secondary" />
+            <span className="text-xl hover:text-secondary">🛒</span>
             {cart.length > 0 && (
               <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
                 {cart.length}
@@ -109,10 +108,12 @@ function Navbar() {
           </div>
 
           {/* Search */}
-          <FaSearch
+          <span
             className="text-xl cursor-pointer hover:text-secondary"
             onClick={() => setSearchOpen(true)}
-          />
+          >
+            🔍
+          </span>
         </div>
       </div>
 
