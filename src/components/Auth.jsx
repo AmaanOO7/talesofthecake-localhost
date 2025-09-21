@@ -9,6 +9,7 @@ const Auth = () => {
   const handleLogin = () => {
     if (role === "admin") {
       if (password === "admin123") { // ✅ replace with secure check
+        localStorage.setItem("isAdminLoggedIn", "true"); // ✅ store session
         navigate("/admin");
       } else {
         alert("Invalid admin password");
